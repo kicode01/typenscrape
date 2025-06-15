@@ -1,4 +1,3 @@
-
 // Service for managing chunked recipe database
 import recipeItems from '../data/recipeitems-latest.json';
 
@@ -72,30 +71,29 @@ class RecipeDataService {
         }
       }
       
-      // Combine all successfully loaded chunks with the base recipes
+      // Use only the chunks (no base recipes)
       const allChunks = chunkPromises.flat();
-      const combinedData = [...recipeItems, ...allChunks];
       
-      this.data.chunks = combinedData;
+      this.data.chunks = allChunks;
       this.data.isLoaded = true;
       this.data.isLoading = false;
 
       // Cache the loaded data
-      this.setCachedData(combinedData);
+      this.setCachedData(allChunks);
 
-      console.log(`Loaded ${combinedData.length} recipes from chunked database (${chunkPromises.length} chunks + base recipes)`);
-      return combinedData;
+      console.log(`Loaded ${allChunks.length} recipes from chunked database (${chunkPromises.length} chunks)`);
+      return allChunks;
 
     } catch (error) {
       console.error('Error loading chunked database:', error);
       this.data.error = error instanceof Error ? error.message : 'Failed to load database';
       this.data.isLoading = false;
       
-      // Fallback to base recipes only
-      this.data.chunks = recipeItems;
+      // No fallback - return empty array
+      this.data.chunks = [];
       this.data.isLoaded = true;
-      console.log(`Fallback: Loaded ${recipeItems.length} recipes from base database`);
-      return recipeItems;
+      console.log('No recipes available - all chunks failed to load');
+      return [];
     }
   }
 

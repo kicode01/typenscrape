@@ -1,4 +1,5 @@
 
+
 // Comprehensive offline recipe database and generator
 import { convertExternalRecipe } from './recipeConverter';
 import { recipeDataService } from '../services/recipeDataService';
@@ -17,87 +18,14 @@ interface RecipeTemplate {
   relatedDishes: string[];
 }
 
-// Base recipe database (small fallback database)
-const recipeDatabase: RecipeTemplate[] = [
-  {
-    name: "Classic Chicken Stir Fry",
-    description: "A quick and healthy chicken stir fry with vegetables",
-    cookTime: "15 minutes",
-    servings: "4 servings",
-    difficulty: "Easy",
-    mainIngredients: ["chicken", "vegetables"],
-    ingredients: [
-      { name: "Chicken breast", amount: "1 lb" },
-      { name: "Mixed vegetables", amount: "2 cups" },
-      { name: "Soy sauce", amount: "3 tbsp" },
-      { name: "Garlic", amount: "2 cloves" },
-      { name: "Ginger", amount: "1 tsp" },
-      { name: "Oil", amount: "2 tbsp" }
-    ],
-    instructions: [
-      "Cut chicken into bite-sized pieces",
-      "Heat oil in a large pan or wok",
-      "Cook chicken until golden, about 5-7 minutes",
-      "Add vegetables and stir-fry for 3-4 minutes",
-      "Add soy sauce, garlic, and ginger",
-      "Cook for another 2 minutes until vegetables are tender-crisp",
-      "Serve immediately over rice"
-    ],
-    tips: [
-      "Cut chicken against the grain for tenderness",
-      "Don't overcrowd the pan",
-      "Have all ingredients prepped before cooking"
-    ],
-    suggestions: ["rice", "noodles", "sesame oil", "green onions"],
-    relatedDishes: ["Beef Stir Fry", "Vegetable Stir Fry", "Fried Rice"]
-  },
-  {
-    name: "Simple Pasta Marinara",
-    description: "Classic pasta with homemade marinara sauce",
-    cookTime: "20 minutes",
-    servings: "4 servings",
-    difficulty: "Easy",
-    mainIngredients: ["pasta", "tomato"],
-    ingredients: [
-      { name: "Pasta", amount: "1 lb" },
-      { name: "Crushed tomatoes", amount: "28 oz can" },
-      { name: "Garlic", amount: "4 cloves" },
-      { name: "Onion", amount: "1 medium" },
-      { name: "Olive oil", amount: "3 tbsp" },
-      { name: "Basil", amount: "2 tbsp fresh" },
-      { name: "Salt", amount: "to taste" },
-      { name: "Black pepper", amount: "to taste" }
-    ],
-    instructions: [
-      "Bring a large pot of salted water to boil",
-      "Cook pasta according to package directions",
-      "Meanwhile, heat olive oil in a large pan",
-      "Sauté diced onion until translucent, about 5 minutes",
-      "Add minced garlic and cook for 1 minute",
-      "Add crushed tomatoes, salt, and pepper",
-      "Simmer for 10-15 minutes",
-      "Stir in fresh basil",
-      "Drain pasta and toss with sauce"
-    ],
-    tips: [
-      "Save some pasta water to thin sauce if needed",
-      "Don't rinse pasta after draining",
-      "Add basil at the end to preserve flavor"
-    ],
-    suggestions: ["parmesan cheese", "red pepper flakes", "oregano"],
-    relatedDishes: ["Spaghetti Bolognese", "Penne Arrabbiata", "Pasta Primavera"]
-  }
-];
-
-// Get combined database (fallback + chunked data)
-async function getCombinedRecipeDatabase(): Promise<RecipeTemplate[]> {
+// Get chunked database only
+async function getRecipeDatabase(): Promise<RecipeTemplate[]> {
   try {
     const chunkedData = await recipeDataService.loadChunkedDatabase();
-    const convertedChunkedRecipes = chunkedData.map(convertExternalRecipe);
-    return [...recipeDatabase, ...convertedChunkedRecipes];
+    return chunkedData.map(convertExternalRecipe);
   } catch (error) {
-    console.warn('Failed to load chunked database, using fallback:', error);
-    return recipeDatabase;
+    console.warn('Failed to load chunked database:', error);
+    return [];
   }
 }
 
@@ -226,9 +154,42 @@ export async function generateRecipeFromIngredients(
     }
   }
 
-  // Offline generation using combined database
-  const combinedDatabase = await getCombinedRecipeDatabase();
-  const matchingRecipes = findMatchingRecipes(ingredients, combinedDatabase);
+  // Offline generation using chunked database only
+  const database = await getRecipeDatabase();
+  
+  if (database.length === 0) {
+    // If no database is available, create a basic recipe from scratch
+    return {
+      name: generateCreativeName(ingredients),
+      description: `A creative dish featuring ${ingredients.join(', ')} with simple, delicious preparation.`,
+      cookTime: "25 minutes",
+      servings: "4 servings",
+      difficulty: "Easy",
+      ingredients: ingredients.map(ing => ({ name: ing, amount: "as needed" })).concat([
+        { name: "Salt", amount: "to taste" },
+        { name: "Black pepper", amount: "to taste" },
+        { name: "Olive oil", amount: "2 tbsp" }
+      ]),
+      instructions: [
+        "Prepare all ingredients by washing, chopping, and measuring as needed",
+        "Heat olive oil in a large pan over medium heat",
+        `Add ${ingredients[0]} and cook until lightly browned`,
+        `Add remaining ingredients: ${ingredients.slice(1).join(', ')}`,
+        "Season with salt and pepper to taste",
+        "Cook until all ingredients are tender and flavors are well combined",
+        "Adjust seasoning and serve hot"
+      ],
+      tips: [
+        "Taste and adjust seasonings throughout cooking",
+        "Don't overcook - fresh ingredients taste best when not overdone",
+        "Feel free to add herbs and spices to enhance flavor"
+      ],
+      suggestions: ["garlic", "onion", "herbs", "lemon juice"],
+      relatedDishes: Object.values(recipeVariations).flat().slice(0, 4)
+    };
+  }
+
+  const matchingRecipes = findMatchingRecipes(ingredients, database);
   
   if (matchingRecipes.length > 0) {
     // Use the best matching recipe as a base
@@ -298,3 +259,4 @@ export async function generateRecipeFromIngredients(
 }
 
 export { recipeVariations, recipeDataService };
+
