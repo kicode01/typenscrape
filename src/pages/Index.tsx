@@ -63,7 +63,7 @@ const Index = () => {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500"> Any Ingredients</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Simply list the ingredients you have, and get a delicious recipe with detailed instructions, measurements, and helpful tips to make your cooking experience amazing.
+              Just type what you have. We’ll scrape and build a recipe that works for your taste, time, and kitchen.
             </p>
             <div className="flex items-center justify-center space-x-8 text-gray-500">
               <div className="flex items-center space-x-2">
