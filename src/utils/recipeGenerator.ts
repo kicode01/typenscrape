@@ -1,4 +1,3 @@
-
 // Comprehensive offline recipe database and generator
 interface RecipeTemplate {
   name: string;
@@ -87,10 +86,10 @@ const recipeDatabase: RecipeTemplate[] = [
 ];
 
 // Extensive offline recipe database
-import externalRecipesData from '../data/externalRecipes.json';
+import recipeItemsData from '../data/recipeitems-latest.json';
 import { convertExternalRecipe } from './recipeConverter';
 
-const convertedExternalRecipes = externalRecipesData.map(convertExternalRecipe);
+const convertedExternalRecipes = recipeItemsData.map(convertExternalRecipe);
 
 const combinedRecipeDatabase = [...recipeDatabase, ...convertedExternalRecipes];
 
