@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -38,7 +37,7 @@ export const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ apiKey, setApiKey }) =
             <div className="flex-1 relative">
               <Input
                 type={showKey ? 'text' : 'password'}
-                placeholder="sk-..."
+                placeholder="Enter your Google Gemini API key"
                 value={tempKey}
                 onChange={(e) => setTempKey(e.target.value)}
                 className="pr-10"

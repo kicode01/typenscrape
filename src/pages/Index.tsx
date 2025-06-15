@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { RecipeGenerator } from '@/components/RecipeGenerator';
 import { RecipeCard } from '@/components/RecipeCard';
@@ -45,7 +44,7 @@ const Index = () => {
                 <div className="space-y-4">
                   <p className="text-sm text-gray-600">
                     This app works completely offline with a built-in recipe database. 
-                    For enhanced AI-powered responses and more creative recipes, you can optionally add an OpenAI API key.
+                    For enhanced AI-powered responses and more creative recipes, you can optionally add a Google Gemini API key.
                   </p>
                   <ApiKeyInput apiKey={apiKey} setApiKey={setApiKey} />
                 </div>

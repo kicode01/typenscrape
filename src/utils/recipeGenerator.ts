@@ -1,4 +1,3 @@
-
 // Comprehensive offline recipe database and generator
 import { convertExternalRecipe } from './recipeConverter';
 import { recipeDataService } from '../services/recipeDataService';
@@ -297,21 +296,10 @@ export async function generateRecipeFromIngredients(
   apiKey?: string
 ): Promise<any> {
   
-  // If API key is provided, try to use OpenAI API for enhanced generation
+  // If API key is provided, try to use Gemini API for enhanced generation
   if (apiKey && apiKey.trim()) {
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-4.1-2025-04-14',
-          messages: [
-            {
-              role: 'system',
-              content: `You are a professional chef assistant. Create a detailed recipe using the given ingredients. Return a JSON object with this exact structure:
+      const systemPrompt = `You are a professional chef assistant. Create a detailed recipe using the given ingredients. Return a JSON object with this exact structure:
 {
   "name": "Recipe Name",
   "description": "Brief description",
@@ -323,26 +311,42 @@ export async function generateRecipeFromIngredients(
   "tips": ["tip 1", "tip 2"],
   "suggestions": ["ingredient 1", "ingredient 2"],
   "relatedDishes": ["dish 1", "dish 2"]
-}`
-            },
-            {
-              role: 'user',
-              content: `Create a recipe using these ingredients: ${ingredients.join(', ')}. ${preferences ? `Preferences: ${preferences}` : ''}`
-            }
-          ],
-          temperature: 0.7,
-          max_tokens: 1000,
+}`;
+
+      const userPrompt = `Create a recipe using these ingredients: ${ingredients.join(', ')}. ${preferences ? `Preferences: ${preferences}` : ''}`;
+      
+      const fullPrompt = `${systemPrompt}\n\n${userPrompt}`;
+
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: fullPrompt }] }],
+          generationConfig: {
+            responseMimeType: "application/json",
+            temperature: 0.7,
+            maxOutputTokens: 2048,
+          },
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        const recipeText = data.choices[0].message.content;
-        try {
-          return JSON.parse(recipeText);
-        } catch (parseError) {
-          console.log('Failed to parse AI response, falling back to offline generation');
+        if (data.candidates && data.candidates.length > 0) {
+            const recipeText = data.candidates[0].content.parts[0].text;
+            try {
+              return JSON.parse(recipeText);
+            } catch (parseError) {
+              console.log('Failed to parse AI response, falling back to offline generation', parseError);
+            }
+        } else {
+            console.log('Gemini API call was ok, but no candidates returned.', await response.text());
         }
+      } else {
+        const errorData = await response.json();
+        console.log('API call failed, falling back to offline generation:', errorData);
       }
     } catch (error) {
       console.log('API call failed, falling back to offline generation:', error);
