@@ -1,3 +1,4 @@
+
 // Comprehensive offline recipe database and generator
 interface RecipeTemplate {
   name: string;
@@ -12,6 +13,78 @@ interface RecipeTemplate {
   suggestions: string[];
   relatedDishes: string[];
 }
+
+// Base recipe database
+const recipeDatabase: RecipeTemplate[] = [
+  {
+    name: "Classic Chicken Stir Fry",
+    description: "A quick and healthy chicken stir fry with vegetables",
+    cookTime: "15 minutes",
+    servings: "4 servings",
+    difficulty: "Easy",
+    mainIngredients: ["chicken", "vegetables"],
+    ingredients: [
+      { name: "Chicken breast", amount: "1 lb" },
+      { name: "Mixed vegetables", amount: "2 cups" },
+      { name: "Soy sauce", amount: "3 tbsp" },
+      { name: "Garlic", amount: "2 cloves" },
+      { name: "Ginger", amount: "1 tsp" },
+      { name: "Oil", amount: "2 tbsp" }
+    ],
+    instructions: [
+      "Cut chicken into bite-sized pieces",
+      "Heat oil in a large pan or wok",
+      "Cook chicken until golden, about 5-7 minutes",
+      "Add vegetables and stir-fry for 3-4 minutes",
+      "Add soy sauce, garlic, and ginger",
+      "Cook for another 2 minutes until vegetables are tender-crisp",
+      "Serve immediately over rice"
+    ],
+    tips: [
+      "Cut chicken against the grain for tenderness",
+      "Don't overcrowd the pan",
+      "Have all ingredients prepped before cooking"
+    ],
+    suggestions: ["rice", "noodles", "sesame oil", "green onions"],
+    relatedDishes: ["Beef Stir Fry", "Vegetable Stir Fry", "Fried Rice"]
+  },
+  {
+    name: "Simple Pasta Marinara",
+    description: "Classic pasta with homemade marinara sauce",
+    cookTime: "20 minutes",
+    servings: "4 servings",
+    difficulty: "Easy",
+    mainIngredients: ["pasta", "tomato"],
+    ingredients: [
+      { name: "Pasta", amount: "1 lb" },
+      { name: "Crushed tomatoes", amount: "28 oz can" },
+      { name: "Garlic", amount: "4 cloves" },
+      { name: "Onion", amount: "1 medium" },
+      { name: "Olive oil", amount: "3 tbsp" },
+      { name: "Basil", amount: "2 tbsp fresh" },
+      { name: "Salt", amount: "to taste" },
+      { name: "Black pepper", amount: "to taste" }
+    ],
+    instructions: [
+      "Bring a large pot of salted water to boil",
+      "Cook pasta according to package directions",
+      "Meanwhile, heat olive oil in a large pan",
+      "Sauté diced onion until translucent, about 5 minutes",
+      "Add minced garlic and cook for 1 minute",
+      "Add crushed tomatoes, salt, and pepper",
+      "Simmer for 10-15 minutes",
+      "Stir in fresh basil",
+      "Drain pasta and toss with sauce"
+    ],
+    tips: [
+      "Save some pasta water to thin sauce if needed",
+      "Don't rinse pasta after draining",
+      "Add basil at the end to preserve flavor"
+    ],
+    suggestions: ["parmesan cheese", "red pepper flakes", "oregano"],
+    relatedDishes: ["Spaghetti Bolognese", "Penne Arrabbiata", "Pasta Primavera"]
+  }
+];
 
 // Extensive offline recipe database
 import externalRecipesData from '../data/externalRecipes.json';
