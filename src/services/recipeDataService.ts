@@ -1,6 +1,16 @@
 
 // Service for managing chunked recipe database
 import recipeItems from '../data/recipeitems-latest.json';
+import chunk1 from '../data/chunk_1.json';
+import chunk2 from '../data/chunk_2.json';
+import chunk3 from '../data/chunk_3.json';
+import chunk4 from '../data/chunk_4.json';
+import chunk5 from '../data/chunk_5.json';
+import chunk6 from '../data/chunk_6.json';
+import chunk7 from '../data/chunk_7.json';
+import chunk8 from '../data/chunk_8.json';
+import chunk9 from '../data/chunk_9.json';
+import chunk10 from '../data/chunk_10.json';
 
 interface ChunkedRecipeData {
   chunks: any[];
@@ -47,11 +57,10 @@ class RecipeDataService {
     if (cachedData) {
       this.data.chunks = cachedData;
       this.data.isLoaded = true;
+      console.log(`Loaded ${cachedData.length} recipes from cache`);
       return cachedData;
     }
 
-    // For now, use the existing recipe database
-    // This can be extended later when you add the chunked files
     this.data.isLoading = true;
     this.data.error = null;
 
@@ -59,7 +68,11 @@ class RecipeDataService {
       // Simulate loading time to show the loading state
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      const combinedData = recipeItems || [];
+      // Load all chunks
+      const chunks = [chunk1, chunk2, chunk3, chunk4, chunk5, chunk6, chunk7, chunk8, chunk9, chunk10];
+      
+      // Combine all chunks with the base recipes
+      const combinedData = [...recipeItems, ...chunks.flat()];
       
       this.data.chunks = combinedData;
       this.data.isLoaded = true;
@@ -68,14 +81,19 @@ class RecipeDataService {
       // Cache the loaded data
       this.setCachedData(combinedData);
 
-      console.log(`Loaded ${combinedData.length} recipes from database`);
+      console.log(`Loaded ${combinedData.length} recipes from chunked database (${chunks.length} chunks + base recipes)`);
       return combinedData;
 
     } catch (error) {
-      console.error('Error loading recipe database:', error);
+      console.error('Error loading chunked database:', error);
       this.data.error = error instanceof Error ? error.message : 'Failed to load database';
       this.data.isLoading = false;
-      return [];
+      
+      // Fallback to base recipes only
+      this.data.chunks = recipeItems;
+      this.data.isLoaded = true;
+      console.log(`Fallback: Loaded ${recipeItems.length} recipes from base database`);
+      return recipeItems;
     }
   }
 
@@ -120,7 +138,8 @@ class RecipeDataService {
     return {
       isLoaded: this.data.isLoaded,
       isLoading: this.data.isLoading,
-      error: this.data.error
+      error: this.data.error,
+      totalRecipes: this.data.chunks.length
     };
   }
 
@@ -134,39 +153,14 @@ class RecipeDataService {
     this.clearCache();
   }
 
-  // Method to add chunked files when you're ready
-  async loadFromChunks(chunkUrls: string[]): Promise<any[]> {
-    this.data.isLoading = true;
-    this.data.error = null;
-
-    try {
-      const chunkPromises = chunkUrls.map(async (url) => {
-        try {
-          const response = await fetch(url);
-          return await response.json();
-        } catch (error) {
-          console.warn(`Failed to load chunk from ${url}:`, error);
-          return [];
-        }
-      });
-
-      const chunks = await Promise.all(chunkPromises);
-      const combinedData = chunks.flat();
-
-      this.data.chunks = combinedData;
-      this.data.isLoaded = true;
-      this.data.isLoading = false;
-
-      this.setCachedData(combinedData);
-      console.log(`Loaded ${combinedData.length} recipes from ${chunkUrls.length} chunks`);
-      return combinedData;
-
-    } catch (error) {
-      console.error('Error loading chunked database:', error);
-      this.data.error = error instanceof Error ? error.message : 'Failed to load database';
-      this.data.isLoading = false;
-      return [];
-    }
+  // Get database statistics
+  getDatabaseStats() {
+    return {
+      totalRecipes: this.data.chunks.length,
+      isLoaded: this.data.isLoaded,
+      isLoading: this.data.isLoading,
+      error: this.data.error
+    };
   }
 }
 

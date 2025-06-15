@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Plus, X, Lightbulb, Database } from 'lucide-react';
+import { Sparkles, Plus, X, Lightbulb, Database, CheckCircle, AlertCircle } from 'lucide-react';
 import { generateRecipeFromIngredients } from '@/utils/recipeGenerator';
 import { recipeDataService } from '@/services/recipeDataService';
 import { toast } from 'sonner';
@@ -97,7 +98,7 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({ onRecipeGenera
           <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
             <div className="flex items-center space-x-2 text-blue-700">
               <Database className="h-4 w-4 animate-pulse" />
-              <span className="text-sm">Loading recipe database...</span>
+              <span className="text-sm">Loading chunked recipe database...</span>
             </div>
           </div>
         )}
@@ -105,8 +106,8 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({ onRecipeGenera
         {databaseState.error && (
           <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
             <div className="flex items-center space-x-2 text-yellow-700">
-              <Database className="h-4 w-4" />
-              <span className="text-sm">Using basic recipe database (extended database failed to load)</span>
+              <AlertCircle className="h-4 w-4" />
+              <span className="text-sm">Using fallback database (chunked database failed to load)</span>
             </div>
           </div>
         )}
@@ -114,8 +115,10 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({ onRecipeGenera
         {databaseState.isLoaded && !databaseState.isLoading && !databaseState.error && (
           <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
             <div className="flex items-center space-x-2 text-green-700">
-              <Database className="h-4 w-4" />
-              <span className="text-sm">Full recipe database loaded successfully!</span>
+              <CheckCircle className="h-4 w-4" />
+              <span className="text-sm">
+                Chunked database loaded successfully! ({databaseState.totalRecipes} recipes available)
+              </span>
             </div>
           </div>
         )}
