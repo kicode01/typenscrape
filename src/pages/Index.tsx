@@ -28,16 +28,9 @@ const Index = () => {
                 <p className="text-gray-600">Transform ingredients into culinary magic</p>
               </div>
             </div>
-            
-            {/* API Key Input and AI Enhancement */}
-            <div className="flex items-center space-x-4">
-              <div className="flex-1 max-w-md">
-                <ApiKeyInput apiKey={apiKey} setApiKey={setApiKey} />
-              </div>
-              <div className="flex items-center space-x-2 text-orange-600">
-                <Sparkles className="h-5 w-5" />
-                <span className="font-medium">AI-Powered Recipes</span>
-              </div>
+            <div className="hidden md:flex items-center space-x-2 text-orange-600">
+              <Sparkles className="h-5 w-5" />
+              <span className="font-medium">AI-Powered Recipes</span>
             </div>
           </div>
         </div>
@@ -80,6 +73,11 @@ const Index = () => {
                 <span>AI-Enhanced Suggestions</span>
               </div>
             </div>
+          </div>
+
+          {/* API Key Input */}
+          <div className="mb-8">
+            <ApiKeyInput apiKey={apiKey} setApiKey={setApiKey} />
           </div>
 
           {/* Recipe Generator */}
