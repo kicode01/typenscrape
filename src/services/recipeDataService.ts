@@ -1,16 +1,6 @@
 
 // Service for managing chunked recipe database
 import recipeItems from '../data/recipeitems-latest.json';
-import chunk1 from '../data/chunk_1.json';
-import chunk2 from '../data/chunk_2.json';
-import chunk3 from '../data/chunk_3.json';
-import chunk4 from '../data/chunk_4.json';
-import chunk5 from '../data/chunk_5.json';
-import chunk6 from '../data/chunk_6.json';
-import chunk7 from '../data/chunk_7.json';
-import chunk8 from '../data/chunk_8.json';
-import chunk9 from '../data/chunk_9.json';
-import chunk10 from '../data/chunk_10.json';
 
 interface ChunkedRecipeData {
   chunks: any[];
@@ -68,11 +58,23 @@ class RecipeDataService {
       // Simulate loading time to show the loading state
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Load all chunks
-      const chunks = [chunk1, chunk2, chunk3, chunk4, chunk5, chunk6, chunk7, chunk8, chunk9, chunk10];
+      // Load chunks dynamically using dynamic imports
+      const chunkPromises = [];
       
-      // Combine all chunks with the base recipes
-      const combinedData = [...recipeItems, ...chunks.flat()];
+      // Try to load each chunk individually to avoid memory issues
+      for (let i = 1; i <= 10; i++) {
+        try {
+          const chunkModule = await import(`../data/chunk_${i}.json`);
+          chunkPromises.push(chunkModule.default || chunkModule);
+        } catch (error) {
+          console.warn(`Failed to load chunk_${i}.json:`, error);
+          // Continue loading other chunks even if one fails
+        }
+      }
+      
+      // Combine all successfully loaded chunks with the base recipes
+      const allChunks = chunkPromises.flat();
+      const combinedData = [...recipeItems, ...allChunks];
       
       this.data.chunks = combinedData;
       this.data.isLoaded = true;
@@ -81,7 +83,7 @@ class RecipeDataService {
       // Cache the loaded data
       this.setCachedData(combinedData);
 
-      console.log(`Loaded ${combinedData.length} recipes from chunked database (${chunks.length} chunks + base recipes)`);
+      console.log(`Loaded ${combinedData.length} recipes from chunked database (${chunkPromises.length} chunks + base recipes)`);
       return combinedData;
 
     } catch (error) {
