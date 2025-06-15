@@ -21,7 +21,7 @@ const Index = () => {
               <img src="/lovable-uploads/cef3f1b2-69eb-49e3-89aa-4cac84df549a.png" alt="TypenScrape Logo" className="h-14 w-14 rounded-xl" />
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">TypenScrape</h1>
-                <p className="text-gray-600">Transform ingredients into culinary magic</p>
+                <p className="text-gray-600">Type your cravings. Scrape your next meal.</p>
               </div>
             </div>
             
