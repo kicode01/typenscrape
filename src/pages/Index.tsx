@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { RecipeGenerator } from '@/components/RecipeGenerator';
 import { RecipeCard } from '@/components/RecipeCard';
@@ -70,15 +71,15 @@ const Index = () => {
             <div className="flex items-center justify-center space-x-8 text-gray-500">
               <div className="flex items-center space-x-2">
                 <Utensils className="h-5 w-5" />
-                <span>1000+ Recipe Combinations</span>
+                <span>Endless Recipe Ideas</span>
               </div>
               <div className="flex items-center space-x-2">
                 <ChefHat className="h-5 w-5" />
-                <span>Professional Instructions</span>
+                <span>Step-by-Step Instructions</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Sparkles className="h-5 w-5" />
-                <span>AI-Enhanced Suggestions</span>
+                <span>Smart Cooking Tips</span>
               </div>
             </div>
           </div>
