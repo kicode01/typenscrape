@@ -1,5 +1,7 @@
 
 // Service for managing chunked recipe database
+import recipeItems from '../data/recipeitems-latest.json';
+
 interface ChunkedRecipeData {
   chunks: any[];
   isLoaded: boolean;
@@ -15,7 +17,6 @@ class RecipeDataService {
     error: null
   };
 
-  private readonly CHUNK_COUNT = 10;
   private readonly CACHE_KEY = 'recipe_chunks_cache';
   private readonly CACHE_TIMESTAMP_KEY = 'recipe_chunks_timestamp';
   private readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
@@ -49,26 +50,17 @@ class RecipeDataService {
       return cachedData;
     }
 
-    // Load chunks from JSON files
+    // For now, use the existing recipe database
+    // This can be extended later when you add the chunked files
     this.data.isLoading = true;
     this.data.error = null;
 
     try {
-      const chunkPromises = [];
+      // Simulate loading time to show the loading state
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      for (let i = 1; i <= this.CHUNK_COUNT; i++) {
-        const chunkPromise = import(`../data/recipe-chunk-${i}.json`)
-          .then(module => module.default)
-          .catch(error => {
-            console.warn(`Failed to load recipe-chunk-${i}.json:`, error);
-            return [];
-          });
-        chunkPromises.push(chunkPromise);
-      }
-
-      const chunks = await Promise.all(chunkPromises);
-      const combinedData = chunks.flat();
-
+      const combinedData = recipeItems || [];
+      
       this.data.chunks = combinedData;
       this.data.isLoaded = true;
       this.data.isLoading = false;
@@ -76,11 +68,11 @@ class RecipeDataService {
       // Cache the loaded data
       this.setCachedData(combinedData);
 
-      console.log(`Loaded ${combinedData.length} recipes from ${this.CHUNK_COUNT} chunks`);
+      console.log(`Loaded ${combinedData.length} recipes from database`);
       return combinedData;
 
     } catch (error) {
-      console.error('Error loading chunked database:', error);
+      console.error('Error loading recipe database:', error);
       this.data.error = error instanceof Error ? error.message : 'Failed to load database';
       this.data.isLoading = false;
       return [];
@@ -140,6 +132,41 @@ class RecipeDataService {
       error: null
     };
     this.clearCache();
+  }
+
+  // Method to add chunked files when you're ready
+  async loadFromChunks(chunkUrls: string[]): Promise<any[]> {
+    this.data.isLoading = true;
+    this.data.error = null;
+
+    try {
+      const chunkPromises = chunkUrls.map(async (url) => {
+        try {
+          const response = await fetch(url);
+          return await response.json();
+        } catch (error) {
+          console.warn(`Failed to load chunk from ${url}:`, error);
+          return [];
+        }
+      });
+
+      const chunks = await Promise.all(chunkPromises);
+      const combinedData = chunks.flat();
+
+      this.data.chunks = combinedData;
+      this.data.isLoaded = true;
+      this.data.isLoading = false;
+
+      this.setCachedData(combinedData);
+      console.log(`Loaded ${combinedData.length} recipes from ${chunkUrls.length} chunks`);
+      return combinedData;
+
+    } catch (error) {
+      console.error('Error loading chunked database:', error);
+      this.data.error = error instanceof Error ? error.message : 'Failed to load database';
+      this.data.isLoading = false;
+      return [];
+    }
   }
 }
 
