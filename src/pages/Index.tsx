@@ -71,7 +71,7 @@ const Index = () => {
             <div className="flex items-center justify-center space-x-8 text-gray-500">
               <div className="flex items-center space-x-2">
                 <Utensils className="h-5 w-5" />
-                <span>Endless Recipe Ideas</span>
+                <span>Millions of Recipe Combinations</span>
               </div>
               <div className="flex items-center space-x-2">
                 <ChefHat className="h-5 w-5" />
