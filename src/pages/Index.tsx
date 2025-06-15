@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { RecipeGenerator } from '@/components/RecipeGenerator';
 import { RecipeCard } from '@/components/RecipeCard';
@@ -110,18 +109,13 @@ const Index = () => {
       <footer className="bg-gray-900 text-white py-12 mt-16">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <div className="flex items-center justify-center space-x-3 mb-4">
+            <div className="flex items-center justify-center space-x-3">
               <img src="/lovable-uploads/cef3f1b2-69eb-49e3-89aa-4cac84df549a.png" alt="TypenScrape Logo" className="h-10 w-10 rounded-lg" />
               <span className="text-2xl font-bold">TypenScrape</span>
             </div>
-            <p className="text-gray-400 mb-6">
-              Transforming simple ingredients into extraordinary culinary experiences
+            <p className="text-gray-400 mt-4 text-sm">
+              © 2025 TypenScrape. All rights reserved.
             </p>
-            <div className="flex items-center justify-center space-x-6 text-sm text-gray-400">
-              <span>• Works Offline</span>
-              <span>• AI-Powered</span>
-              <span>• Unlimited Recipes</span>
-            </div>
           </div>
         </div>
       </footer>
