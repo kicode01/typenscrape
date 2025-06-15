@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Sparkles, Plus, X, Lightbulb, Database, CheckCircle, AlertCircle } from 'lucide-react';
 import { generateRecipeFromIngredients } from '@/utils/recipeGenerator';
 import { recipeDataService } from '@/services/recipeDataService';
+import { ChefKico } from '@/components/ChefKico';
 import { toast } from 'sonner';
 
 interface RecipeGeneratorProps {
@@ -87,9 +87,12 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({ onRecipeGenera
   return (
     <Card className="bg-white shadow-lg border-orange-100">
       <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
-        <CardTitle className="flex items-center space-x-2">
-          <Sparkles className="h-6 w-6" />
-          <span>Recipe Generator</span>
+        <CardTitle className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Sparkles className="h-6 w-6" />
+            <span>Recipe Generator</span>
+          </div>
+          <ChefKico context="adding-ingredients" size="sm" />
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6">
@@ -125,9 +128,17 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({ onRecipeGenera
 
         {/* Ingredient Input */}
         <div className="mb-6">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Add Your Ingredients
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-semibold text-gray-700">
+              Add Your Ingredients
+            </label>
+            {ingredients.length > 0 && (
+              <div className="flex items-center space-x-2">
+                <ChefKico context="adding-ingredients" size="sm" />
+                <span className="text-xs text-orange-600">Chef Kico has tips!</span>
+              </div>
+            )}
+          </div>
           <div className="flex space-x-2">
             <Input
               placeholder="Enter an ingredient..."
@@ -206,24 +217,34 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({ onRecipeGenera
         </div>
 
         {/* Generate Button */}
-        <Button
-          onClick={generateRecipe}
-          disabled={isGenerating || ingredients.length === 0}
-          className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white py-3"
-          size="lg"
-        >
-          {isGenerating ? (
-            <>
-              <Sparkles className="h-5 w-5 mr-2 animate-spin" />
-              Generating Recipe...
-            </>
-          ) : (
-            <>
-              <Sparkles className="h-5 w-5 mr-2" />
-              Generate Recipe
-            </>
+        <div className="space-y-3">
+          <Button
+            onClick={generateRecipe}
+            disabled={isGenerating || ingredients.length === 0}
+            className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white py-3"
+            size="lg"
+          >
+            {isGenerating ? (
+              <>
+                <Sparkles className="h-5 w-5 mr-2 animate-spin" />
+                Generating Recipe...
+              </>
+            ) : (
+              <>
+                <Sparkles className="h-5 w-5 mr-2" />
+                Generate Recipe
+              </>
+            )}
+          </Button>
+          
+          {/* Chef Kico encouragement */}
+          {isGenerating && (
+            <div className="flex items-center justify-center space-x-2 text-orange-600">
+              <ChefKico context="generating" size="sm" />
+              <span className="text-sm">Chef Kico is cooking up something special...</span>
+            </div>
           )}
-        </Button>
+        </div>
       </CardContent>
     </Card>
   );

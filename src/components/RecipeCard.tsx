@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Clock, Users, ChefHat, Lightbulb, Utensils } from 'lucide-react';
+import { ChefKico } from '@/components/ChefKico';
 
 interface Recipe {
   name: string;
@@ -35,8 +35,13 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   return (
     <Card className="bg-white shadow-lg border-orange-100 overflow-hidden">
       <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white">
-        <CardTitle className="text-2xl">{recipe.name}</CardTitle>
-        <p className="text-orange-100 mt-2">{recipe.description}</p>
+        <CardTitle className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl">{recipe.name}</h2>
+            <p className="text-orange-100 mt-2">{recipe.description}</p>
+          </div>
+          <ChefKico context="viewing-recipe" size="md" />
+        </CardTitle>
         
         {/* Recipe Stats */}
         <div className="flex items-center space-x-6 mt-4">
@@ -75,9 +80,15 @@ export const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
 
         {/* Instructions */}
         <div>
-          <h3 className="flex items-center text-lg font-semibold text-gray-800 mb-3">
-            <ChefHat className="h-5 w-5 mr-2 text-orange-500" />
-            Instructions
+          <h3 className="flex items-center justify-between text-lg font-semibold text-gray-800 mb-3">
+            <div className="flex items-center">
+              <ChefHat className="h-5 w-5 mr-2 text-orange-500" />
+              Instructions
+            </div>
+            <div className="flex items-center space-x-2">
+              <ChefKico context="viewing-recipe" size="sm" />
+              <span className="text-xs text-orange-600">Need cooking tips?</span>
+            </div>
           </h3>
           <div className="space-y-3">
             {recipe.instructions.map((instruction, index) => (
