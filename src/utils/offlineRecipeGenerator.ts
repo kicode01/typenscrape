@@ -1,4 +1,3 @@
-
 import { convertExternalRecipe } from './recipeConverter';
 import { recipeDataService } from '../services/recipeDataService';
 
@@ -123,7 +122,6 @@ function findMatchingRecipes(ingredients: string[], database: RecipeTemplate[]):
 }
 
 function generateSmartInstructions(analysis: any, ingredients: string[]): string[] {
-  // ... (implementation is long, but it's moved here from recipeGenerator.ts)
   const { proteins, vegetables, carbs, cookingMethod, cuisineType } = analysis;
   
   let instructions = ["Prepare all ingredients by washing, chopping, and measuring as needed"];
@@ -153,7 +151,7 @@ function generateSmartInstructions(analysis: any, ingredients: string[]): string
   if (cuisineType === 'italian' && analysis.dairy.length > 0) instructions.push(`Stir in ${analysis.dairy.join(' and ')} and let melt`);
   else if (cuisineType === 'asian') instructions.push("Add soy sauce and sesame oil to taste");
 
-  instructions.push("Season with salt and pepper to taste", "Cook for another 2-3 minutes to meld flavors", "Taste and adjust seasoning before serving", "Serve hot and enjoy!");
+  instructions.push("Season with salt and pepper to taste", "Cook for another 2-3 minutes to meld all the flavors together", "Taste and adjust seasoning before serving. A garnish of fresh herbs is always a great addition!", "Serve hot and enjoy!");
 
   return instructions;
 }
@@ -164,6 +162,8 @@ function generateSmartTips(analysis: any, ingredients: string[]): string[] {
   if (analysis.vegetables.length > 3) tips.push("Cut vegetables into similar sizes for even cooking");
   if (analysis.cuisineType === 'asian') tips.push("Have all ingredients prepped before you start cooking - Asian dishes cook quickly");
   if (analysis.difficulty === 'Hard') tips.push("Take your time with prep work - it makes cooking much easier");
+  tips.push("A splash of acid (like lemon juice or vinegar) at the end of cooking can brighten up the entire dish.");
+  tips.push("Don't overcrowd the pan! Cook in batches if necessary to ensure ingredients sear rather than steam.");
   tips.push("Taste as you go and adjust seasonings to your preference", "Let the dish rest for a few minutes before serving to allow flavors to settle");
   return tips;
 }
@@ -175,14 +175,26 @@ function generateSmartSuggestions(analysis: any, ingredients: string[]): string[
   if (!ingredients.some(ing => ['onion', 'garlic'].some(a => ing.toLowerCase().includes(a)))) suggestions.push("Onion and garlic for base flavors");
   if (analysis.cuisineType === 'italian' && !analysis.spices.some(s => s.includes('basil'))) suggestions.push("Fresh basil for authentic Italian flavor");
   if (analysis.cuisineType === 'asian' && !ingredients.some(ing => ing.toLowerCase().includes('ginger'))) suggestions.push("Fresh ginger for authentic Asian taste");
+  suggestions.push("A handful of toasted nuts or seeds for a delightful crunch.");
+  suggestions.push("A spoonful of something umami-rich like soy sauce, tomato paste, or miso.");
   suggestions.push("Fresh herbs like parsley or cilantro for garnish", "Lemon or lime juice for brightness");
   return suggestions.slice(0, 5);
 }
 
 function generateCreativeName(ingredients: string[], analysis: any): string {
   const { cuisineType, proteins, cookingMethod } = analysis;
-  const cuisineAdjectives = { italian: ["Tuscan", "Mediterranean", "Classic"], asian: ["Savory", "Aromatic", "Fusion"], mexican: ["Spicy", "Zesty", "Fresh"], mediterranean: ["Herb-Crusted", "Coastal"], fusion: ["Gourmet", "Creative", "Signature"] };
-  const cookingMethodNames = { quick: ["Stir Fry", "Sauté"], medium: ["Baked", "Roasted"], slow: ["Slow-Cooked", "Stew"] };
+  const cuisineAdjectives = { 
+    italian: ["Tuscan", "Rustic", "Hearty", "Classic"], 
+    asian: ["Sizzling", "Aromatic", "Umami-Rich", "Fusion"], 
+    mexican: ["Fiesta", "Zesty", "Spicy", "Fresh"], 
+    mediterranean: ["Sun-Kissed", "Coastal", "Herb-Crusted"], 
+    fusion: ["Gourmet", "Creative", "Global", "Signature"] 
+  };
+  const cookingMethodNames = { 
+    quick: ["Stir-Fry", "Skillet", "Sauté"], 
+    medium: ["Bake", "Roast", "Casserole"], 
+    slow: ["Slow-Cooked Stew", "Hearty Braise", "Rich Curry"] 
+  };
   const adjective = cuisineAdjectives[cuisineType]?.[Math.floor(Math.random() * cuisineAdjectives[cuisineType].length)] || "Delicious";
   const method = cookingMethodNames[cookingMethod]?.[Math.floor(Math.random() * cookingMethodNames[cookingMethod].length)] || "Dish";
   const mainIngredient = proteins.length > 0 ? proteins[0] : ingredients[0];
