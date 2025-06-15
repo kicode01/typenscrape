@@ -1,4 +1,8 @@
+
 // Comprehensive offline recipe database and generator
+import { convertExternalRecipe } from './recipeConverter';
+import { recipeDataService } from '../services/recipeDataService';
+
 interface RecipeTemplate {
   name: string;
   description: string;
@@ -13,7 +17,7 @@ interface RecipeTemplate {
   relatedDishes: string[];
 }
 
-// Base recipe database
+// Base recipe database (small fallback database)
 const recipeDatabase: RecipeTemplate[] = [
   {
     name: "Classic Chicken Stir Fry",
@@ -85,13 +89,17 @@ const recipeDatabase: RecipeTemplate[] = [
   }
 ];
 
-// Extensive offline recipe database
-import recipeItemsData from '../data/recipeitems-latest.json';
-import { convertExternalRecipe } from './recipeConverter';
-
-const convertedExternalRecipes = recipeItemsData.map(convertExternalRecipe);
-
-const combinedRecipeDatabase = [...recipeDatabase, ...convertedExternalRecipes];
+// Get combined database (fallback + chunked data)
+async function getCombinedRecipeDatabase(): Promise<RecipeTemplate[]> {
+  try {
+    const chunkedData = await recipeDataService.loadChunkedDatabase();
+    const convertedChunkedRecipes = chunkedData.map(convertExternalRecipe);
+    return [...recipeDatabase, ...convertedChunkedRecipes];
+  } catch (error) {
+    console.warn('Failed to load chunked database, using fallback:', error);
+    return recipeDatabase;
+  }
+}
 
 // Additional recipe variations for common ingredients
 const recipeVariations = {
@@ -118,10 +126,10 @@ const recipeVariations = {
 };
 
 // Function to find matching recipes
-function findMatchingRecipes(ingredients: string[]): RecipeTemplate[] {
+function findMatchingRecipes(ingredients: string[], database: RecipeTemplate[]): RecipeTemplate[] {
   const normalizedIngredients = ingredients.map(ing => ing.toLowerCase());
   
-  return combinedRecipeDatabase.filter(recipe => {
+  return database.filter(recipe => {
     const matchCount = recipe.mainIngredients.filter(mainIng =>
       normalizedIngredients.some(ing => 
         ing.includes(mainIng.toLowerCase()) || mainIng.toLowerCase().includes(ing)
@@ -219,7 +227,8 @@ export async function generateRecipeFromIngredients(
   }
 
   // Offline generation using combined database
-  const matchingRecipes = findMatchingRecipes(ingredients);
+  const combinedDatabase = await getCombinedRecipeDatabase();
+  const matchingRecipes = findMatchingRecipes(ingredients, combinedDatabase);
   
   if (matchingRecipes.length > 0) {
     // Use the best matching recipe as a base
@@ -288,4 +297,4 @@ export async function generateRecipeFromIngredients(
   };
 }
 
-export { combinedRecipeDatabase as recipeDatabase, recipeVariations };
+export { recipeVariations, recipeDataService };

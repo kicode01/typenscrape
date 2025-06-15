@@ -1,12 +1,12 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Plus, X, Lightbulb } from 'lucide-react';
+import { Sparkles, Plus, X, Lightbulb, Database } from 'lucide-react';
 import { generateRecipeFromIngredients } from '@/utils/recipeGenerator';
+import { recipeDataService } from '@/services/recipeDataService';
 import { toast } from 'sonner';
 
 interface RecipeGeneratorProps {
@@ -19,6 +19,27 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({ onRecipeGenera
   const [currentIngredient, setCurrentIngredient] = useState('');
   const [preferences, setPreferences] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [databaseState, setDatabaseState] = useState(recipeDataService.getLoadingState());
+
+  // Monitor database loading state
+  useEffect(() => {
+    const checkDatabaseState = () => {
+      const state = recipeDataService.getLoadingState();
+      setDatabaseState(state);
+    };
+
+    // Check initially and set up interval to monitor state
+    checkDatabaseState();
+    const interval = setInterval(checkDatabaseState, 500);
+
+    // Trigger database loading
+    recipeDataService.loadChunkedDatabase().then(() => {
+      checkDatabaseState();
+      clearInterval(interval);
+    });
+
+    return () => clearInterval(interval);
+  }, []);
 
   const addIngredient = () => {
     if (currentIngredient.trim() && !ingredients.includes(currentIngredient.trim())) {
@@ -71,6 +92,34 @@ export const RecipeGenerator: React.FC<RecipeGeneratorProps> = ({ onRecipeGenera
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6">
+        {/* Database Loading Status */}
+        {databaseState.isLoading && (
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-center space-x-2 text-blue-700">
+              <Database className="h-4 w-4 animate-pulse" />
+              <span className="text-sm">Loading recipe database...</span>
+            </div>
+          </div>
+        )}
+
+        {databaseState.error && (
+          <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div className="flex items-center space-x-2 text-yellow-700">
+              <Database className="h-4 w-4" />
+              <span className="text-sm">Using basic recipe database (extended database failed to load)</span>
+            </div>
+          </div>
+        )}
+
+        {databaseState.isLoaded && !databaseState.isLoading && !databaseState.error && (
+          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+            <div className="flex items-center space-x-2 text-green-700">
+              <Database className="h-4 w-4" />
+              <span className="text-sm">Full recipe database loaded successfully!</span>
+            </div>
+          </div>
+        )}
+
         {/* Ingredient Input */}
         <div className="mb-6">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
