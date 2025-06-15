@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { RecipeGenerator } from '@/components/RecipeGenerator';
 import { RecipeCard } from '@/components/RecipeCard';
@@ -18,9 +17,7 @@ const Index = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-r from-orange-500 to-red-500 p-3 rounded-xl">
-                <ChefHat className="h-8 w-8 text-white" />
-              </div>
+              <img src="/lovable-uploads/cef3f1b2-69eb-49e3-89aa-4cac84df549a.png" alt="TypenScrape Logo" className="h-14 w-14 rounded-xl" />
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">TypenScrape</h1>
                 <p className="text-gray-600">Transform ingredients into culinary magic</p>
@@ -114,7 +111,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-3 mb-4">
-              <ChefHat className="h-8 w-8 text-orange-500" />
+              <img src="/lovable-uploads/cef3f1b2-69eb-49e3-89aa-4cac84df549a.png" alt="TypenScrape Logo" className="h-10 w-10 rounded-lg" />
               <span className="text-2xl font-bold">TypenScrape</span>
             </div>
             <p className="text-gray-400 mb-6">
