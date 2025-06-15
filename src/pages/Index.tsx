@@ -28,7 +28,7 @@ const Index = () => {
                 <p className="text-gray-600">Transform ingredients into culinary magic</p>
               </div>
             </div>
-            <div className="hidden md:flex items-center space-x-2 text-orange-600">
+            <div className="flex items-center space-x-2 text-orange-600">
               <Sparkles className="h-5 w-5" />
               <span className="font-medium">AI-Powered Recipes</span>
             </div>
