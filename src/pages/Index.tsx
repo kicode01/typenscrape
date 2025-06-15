@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { RecipeGenerator } from '@/components/RecipeGenerator';
 import { RecipeCard } from '@/components/RecipeCard';
 import { ApiKeyInput } from '@/components/ApiKeyInput';
-import { ChefHat, Sparkles, Utensils } from 'lucide-react';
+import { ChefHat, Sparkles, Utensils, Zap } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const [generatedRecipe, setGeneratedRecipe] = useState(null);
@@ -24,10 +26,31 @@ const Index = () => {
                 <p className="text-gray-600">Transform ingredients into culinary magic</p>
               </div>
             </div>
-            <div className="hidden md:flex items-center space-x-2 text-orange-600">
-              <Sparkles className="h-5 w-5" />
-              <span className="font-medium">AI-Powered Recipes</span>
-            </div>
+            
+            {/* AI Enhancement Dialog Trigger */}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="flex items-center space-x-2 border-orange-200 hover:bg-orange-50">
+                  <Zap className="h-5 w-5 text-orange-600" />
+                  <span className="text-orange-600 font-medium">AI Enhancement (Optional)</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center space-x-2 text-orange-800">
+                    <Zap className="h-5 w-5" />
+                    <span>AI Enhancement (Optional)</span>
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <p className="text-sm text-gray-600">
+                    This app works completely offline with a built-in recipe database. 
+                    For enhanced AI-powered responses and more creative recipes, you can optionally add an OpenAI API key.
+                  </p>
+                  <ApiKeyInput apiKey={apiKey} setApiKey={setApiKey} />
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </header>
@@ -59,11 +82,6 @@ const Index = () => {
                 <span>AI-Enhanced Suggestions</span>
               </div>
             </div>
-          </div>
-
-          {/* API Key Input */}
-          <div className="mb-8">
-            <ApiKeyInput apiKey={apiKey} setApiKey={setApiKey} />
           </div>
 
           {/* Recipe Generator */}
