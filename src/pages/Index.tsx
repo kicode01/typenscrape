@@ -22,7 +22,7 @@ const Index = () => {
                 <ChefHat className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Recipe Wizard</h1>
+                <h1 className="text-2xl font-bold text-gray-900">TypenScrape</h1>
                 <p className="text-gray-600">Transform ingredients into culinary magic</p>
               </div>
             </div>
@@ -115,7 +115,7 @@ const Index = () => {
           <div className="text-center">
             <div className="flex items-center justify-center space-x-3 mb-4">
               <ChefHat className="h-8 w-8 text-orange-500" />
-              <span className="text-2xl font-bold">Recipe Wizard</span>
+              <span className="text-2xl font-bold">TypenScrape</span>
             </div>
             <p className="text-gray-400 mb-6">
               Transforming simple ingredients into extraordinary culinary experiences
