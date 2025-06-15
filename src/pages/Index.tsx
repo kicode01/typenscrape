@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { RecipeGenerator } from '@/components/RecipeGenerator';
 import { RecipeCard } from '@/components/RecipeCard';
 import { ApiKeyInput } from '@/components/ApiKeyInput';
-import { ChefKico } from '@/components/ChefKico';
 import { ChefHat, Sparkles, Utensils } from 'lucide-react';
 
 const Index = () => {
@@ -12,9 +11,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-green-50">
-      {/* Floating Chef Kico */}
-      <ChefKico position="floating" context="general" size="lg" />
-
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-6">
@@ -49,16 +45,6 @@ const Index = () => {
               Just tell us what ingredients you have, and our AI chef will create delicious recipes with detailed instructions, 
               measurements, and helpful suggestions to make your cooking experience amazing.
             </p>
-            
-            {/* Chef Kico Introduction */}
-            <div className="flex items-center justify-center space-x-4 mb-8">
-              <ChefKico context="general" size="md" />
-              <div className="text-left">
-                <p className="text-lg font-medium text-gray-800">Meet Chef Kico!</p>
-                <p className="text-gray-600">Click me for cooking tips and fun facts</p>
-              </div>
-            </div>
-            
             <div className="flex items-center justify-center space-x-8 text-gray-500">
               <div className="flex items-center space-x-2">
                 <Utensils className="h-5 w-5" />
@@ -96,11 +82,7 @@ const Index = () => {
                   <div className="text-center text-gray-500">
                     <ChefHat className="h-16 w-16 mx-auto mb-4 text-gray-300" />
                     <h3 className="text-xl font-semibold mb-2">Your Recipe Will Appear Here</h3>
-                    <p className="mb-4">Enter your ingredients and let our AI chef create something amazing for you!</p>
-                    <div className="flex items-center justify-center">
-                      <ChefKico context="adding-ingredients" size="sm" />
-                      <span className="ml-2 text-sm text-orange-600">Chef Kico is here to help!</span>
-                    </div>
+                    <p>Enter your ingredients and let our AI chef create something amazing for you!</p>
                   </div>
                 </div>
               )}
@@ -124,7 +106,6 @@ const Index = () => {
               <span>• Works Offline</span>
               <span>• AI-Powered</span>
               <span>• Unlimited Recipes</span>
-              <span>• Chef Kico Included</span>
             </div>
           </div>
         </div>
