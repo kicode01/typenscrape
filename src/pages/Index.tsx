@@ -97,7 +97,7 @@ const Index = () => {
                   <div className="text-center text-gray-500">
                     <ChefHat className="h-16 w-16 mx-auto mb-4 text-gray-300" />
                     <h3 className="text-xl font-semibold mb-2">Your Recipe Will Appear Here</h3>
-                    <p>Enter your ingredients and let our AI chef create something amazing for you!</p>
+                    <p>Enter your ingredients and we'll create something amazing for you!</p>
                   </div>
                 </div>
               )}
