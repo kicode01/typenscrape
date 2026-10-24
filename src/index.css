@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
 
 @layer base {
   :root {
@@ -15,8 +15,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 20.5 90.2% 48.2%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -27,77 +27,546 @@
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 20.5 90.2% 48.2%;
 
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --radius: 1rem;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  /* ─── Level 1: The Carinderia (Basic / Default) ────────────── */
+  :root, body[data-theme="carinderia"] {
+    --theme-bg: #FAFAF9;
+    --theme-panel: #FFFFFF;
+    --theme-border: #1C1917;
+    --theme-text: #292524;
+    --theme-primary: #F97316;
+    --theme-primary-hover: #EA580C;
+    --theme-shadow: #1C1917;
+    --theme-icon: #44403C;
+    --theme-bg-pattern: radial-gradient(rgba(28, 25, 23, 0.05) 1.5px, transparent 1.5px);
+    background-size: 20px 20px;
+    
+    /* Geometry */
+    --theme-radius: 12px;
+    --theme-border-width: 2px;
+    --theme-font: 'Nunito', sans-serif;
+    --theme-card-bg: #FFFFFF;
+    --theme-box-shadow: 4px 4px 0px var(--theme-shadow);
+    --theme-drop-shadow: none;
+    --theme-backdrop-filter: none;
+    --theme-clip-path: none;
+    --theme-clip-path-sm: none;
   }
-}
 
-@layer base {
-  * {
-    @apply border-border;
+  /* ─── Level 4: The Palengke (A bit more character) ─────────── */
+  body[data-theme="palengke"] {
+    --theme-bg: #F0F4EC;
+    --theme-panel: #FFFFFF;
+    --theme-border: #2C5234;
+    --theme-text: #1F3824;
+    --theme-primary: #10B981;
+    --theme-primary-hover: #059669;
+    --theme-shadow: rgba(44, 82, 52, 0.4);
+    --theme-icon: #3D6B49;
+    --theme-bg-pattern: radial-gradient(rgba(44, 82, 52, 0.06) 2px, transparent 2.5px);
+    background-size: 24px 24px;
+
+    /* Geometry - Softer and more modern */
+    --theme-radius: 16px;
+    --theme-border-width: 2.5px;
+    --theme-font: 'Zilla Slab', serif;
+    --theme-card-bg: #FFFFFF;
+    --theme-box-shadow: 6px 6px 0px var(--theme-shadow);
+    --theme-drop-shadow: none;
+    --theme-backdrop-filter: none;
+    --theme-clip-path: none;
+    --theme-clip-path-sm: none;
+  }
+
+  /* ─── Level 8: Midnight Ihawan (Ambient Charcoal) ────────────── */
+  body[data-theme="ihawan"] {
+    --theme-bg: #1C1917;
+    --theme-panel: #292524;
+    --theme-border: #44403C;
+    --theme-text: #FAFAF9;
+    --theme-primary: #D97706;
+    --theme-primary-hover: #B45309;
+    --theme-shadow: rgba(0, 0, 0, 0.4);
+    --theme-icon: #A8A29E;
+    --theme-bg-pattern: none;
+    
+    /* Geometry - Soft ambient warmth, deep gray */
+    --theme-radius: 12px;
+    --theme-border-width: 1px;
+    --theme-font: 'Space Grotesk', sans-serif;
+    --theme-card-bg: #292524;
+    --theme-box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.3), inset 0px 1px 1px rgba(255, 255, 255, 0.05);
+    --theme-drop-shadow: none;
+    --theme-backdrop-filter: none;
+    --theme-clip-path: none;
+    --theme-clip-path-sm: none;
+  }
+
+  /* ─── Level 12: Barrio Fiesta (Extravagant Energy) ──────── */
+  @keyframes fiesta-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  body[data-theme="fiesta"] {
+    --theme-bg: #FEF9C3;
+    --theme-panel: #FFFFFF;
+    --theme-border: #0F766E;
+    --theme-text: #1E3A8A;
+    --theme-primary: #EC4899;
+    --theme-primary-hover: #BE185D;
+    --theme-shadow: rgba(15, 118, 110, 0.3);
+    --theme-icon: #1D4ED8;
+    --theme-bg-pattern: linear-gradient(120deg, #FEF9C3, #FCE7F3, #E0F2FE, #FEF9C3);
+    background-size: 300% 300%;
+    animation: fiesta-gradient 12s ease infinite;
+
+    /* Geometry - Extremely rounded, playful, massive diffused shadows */
+    --theme-radius: 28px;
+    --theme-border-width: 0px;
+    --theme-font: 'Nunito', sans-serif;
+    --theme-card-bg: rgba(255, 255, 255, 0.85);
+    --theme-box-shadow: 0px 15px 35px rgba(236, 72, 153, 0.15), 0px 5px 15px rgba(15, 118, 110, 0.1);
+    --theme-drop-shadow: none;
+    --theme-backdrop-filter: blur(8px);
+    --theme-clip-path: none;
+    --theme-clip-path-sm: none;
+  }
+
+  /* ─── Level 16: Heritage Kitchen (Pristine Magazine) ──────── */
+  body[data-theme="heritage"] {
+    --theme-bg: #FDFBF7;
+    --theme-panel: #FFFFFF;
+    --theme-border: rgba(69, 26, 3, 0.1);
+    --theme-text: #291002;
+    --theme-primary: #451A03;
+    --theme-primary-hover: #291002;
+    --theme-shadow: rgba(69, 26, 3, 0.08);
+    --theme-icon: #78350F;
+    --theme-bg-pattern: none;
+    
+    /* Geometry - Very clean, thin borders, elegant serif-like vibes */
+    --theme-radius: 4px;
+    --theme-border-width: 1px;
+    --theme-font: 'Playfair Display', 'Nunito', serif;
+    --theme-card-bg: #FFFFFF;
+    --theme-box-shadow: 0px 20px 40px rgba(69, 26, 3, 0.08);
+    --theme-drop-shadow: none;
+    --theme-backdrop-filter: none;
+    --theme-clip-path: none;
+    --theme-clip-path-sm: none;
+  }
+
+  /* ─── Level 20: Michelin Manila (Absolute Light Frost Glass) ────── */
+  @keyframes light-mesh {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+  }
+  body[data-theme="michelin"] {
+    --theme-bg: #FAFAFA;
+    --theme-panel: rgba(255, 255, 255, 0.5);
+    --theme-border: rgba(0, 0, 0, 0.05);
+    --theme-text: #000000;
+    --theme-primary: #000000;
+    --theme-primary-hover: #333333;
+    --theme-shadow: rgba(0, 0, 0, 0.05);
+    --theme-icon: #666666;
+    --theme-bg-pattern: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+    background-size: 200% 200%;
+    animation: light-mesh 20s ease-in-out infinite alternate;
+    
+    /* Geometry - Incredible light-mode glass, massive blur, super clean */
+    --theme-radius: 24px;
+    --theme-border-width: 1px;
+    --theme-font: 'Inter', sans-serif;
+    --theme-card-bg: rgba(255, 255, 255, 0.6);
+    --theme-box-shadow: 0px 24px 60px rgba(0, 0, 0, 0.04), inset 0px 1px 2px rgba(255, 255, 255, 0.8);
+    --theme-drop-shadow: none;
+    --theme-backdrop-filter: blur(24px) saturate(150%);
+    --theme-clip-path: none;
+    --theme-clip-path-sm: none;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior-y: none;
   }
 
   body {
-    @apply bg-background text-foreground;
+    font-family: var(--theme-font), 'Nunito', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--theme-bg);
+    background-image: var(--theme-bg-pattern);
+    color: var(--theme-text);
+    transition: background-color 0.3s, font-family 0.3s, color 0.3s;
   }
+
+}
+
+/* Font class */
+.font-runde {
+  font-family: var(--theme-font), 'Nunito', sans-serif;
+}
+
+/* ─── Neo-Brutalist Surface Tokens ───────────────────────────── */
+@layer components {
+  .neo-panel {
+    background: var(--theme-card-bg);
+    border-bottom: var(--theme-border-width) solid var(--theme-border);
+    border-radius: var(--theme-radius);
+    color: var(--theme-text);
+    clip-path: var(--theme-clip-path);
+    backdrop-filter: var(--theme-backdrop-filter, none);
+    -webkit-backdrop-filter: var(--theme-backdrop-filter, none);
+    will-change: transform, filter;
+    transform: translateZ(0);
+  }
+
+  .neo-card {
+    background: var(--theme-card-bg);
+    border: var(--theme-border-width) solid var(--theme-border);
+    border-radius: var(--theme-radius);
+    box-shadow: var(--theme-box-shadow);
+    filter: var(--theme-drop-shadow);
+    color: var(--theme-text);
+    clip-path: var(--theme-clip-path);
+    backdrop-filter: var(--theme-backdrop-filter, none);
+    -webkit-backdrop-filter: var(--theme-backdrop-filter, none);
+    will-change: transform, filter;
+    transform: translateZ(0);
+    transition: transform 0.1s ease, filter 0.1s ease, box-shadow 0.1s ease, border-radius 0.3s ease;
+  }
+
+  /* Prevent neo-card from breaking Sonner toast animations */
+  .toast.neo-card {
+    transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms ease, height 400ms ease, box-shadow 200ms ease !important;
+  }
+
+  .neo-shape-sm {
+    border: var(--theme-border-width) solid var(--theme-border);
+    border-radius: var(--theme-radius);
+    box-shadow: var(--theme-box-shadow);
+    filter: var(--theme-drop-shadow);
+    clip-path: var(--theme-clip-path-sm);
+    will-change: transform, filter;
+    transform: translateZ(0);
+    transition: transform 0.1s ease, filter 0.1s ease, box-shadow 0.1s ease, border-radius 0.3s ease;
+  }
+
+  /* ─── Pushable Arcade Button ───────────────────────────────── */
+  .btn-neo {
+    border: var(--theme-border-width) solid var(--theme-border);
+    box-shadow: var(--theme-box-shadow);
+    filter: var(--theme-drop-shadow);
+    border-radius: var(--theme-radius);
+    clip-path: var(--theme-clip-path-sm);
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translate(0, 0);
+    background: var(--theme-primary);
+    color: var(--theme-panel);
+    will-change: transform, filter;
+  }
+  .btn-neo:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+    filter: none;
+  }
+
+  .btn-neo-sm {
+    border: var(--theme-border-width) solid var(--theme-border);
+    box-shadow: var(--theme-box-shadow);
+    filter: var(--theme-drop-shadow);
+    border-radius: var(--theme-radius);
+    clip-path: var(--theme-clip-path-sm);
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translate(0, 0);
+    background: var(--theme-panel);
+    color: var(--theme-text);
+    will-change: transform, filter;
+  }
+  .btn-neo-sm:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+    filter: none;
+  }
+
+  /* ─── SCOPED THEME BEHAVIORS (POLISHED PHYSICS) ────────────────────────────── */
+
+  /* Level 4: The Palengke (Soft inner glow and bouncy leaves) */
+  body[data-theme="palengke"] .neo-card,
+  body[data-theme="palengke"] .btn-neo,
+  body[data-theme="palengke"] .btn-neo-sm {
+    transition: all 0.3s ease-out;
+  }
+  body[data-theme="palengke"] .neo-card {
+    box-shadow: inset 0px 4px 20px rgba(16, 185, 129, 0.05), var(--theme-box-shadow);
+  }
+  body[data-theme="palengke"] .btn-neo:active,
+  body[data-theme="palengke"] .btn-neo-sm:active {
+    transform: translateY(2px) scale(0.96);
+    box-shadow: 0px 2px 0px var(--theme-shadow);
+  }
+  
+  /* Level 8: Midnight Ihawan (Neon outlines) */
+  body[data-theme="ihawan"] .neo-card,
+  body[data-theme="ihawan"] .btn-neo,
+  body[data-theme="ihawan"] .btn-neo-sm {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  /* Level 8: Midnight Ihawan (Ambient Charcoal Warmth) */
+  body[data-theme="ihawan"] .neo-card,
+  body[data-theme="ihawan"] .btn-neo,
+  body[data-theme="ihawan"] .btn-neo-sm {
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  /* Primary buttons remain solid for high contrast */
+  body[data-theme="ihawan"] .btn-neo {
+    background: var(--theme-primary);
+    color: var(--theme-panel);
+    border-color: transparent;
+  }
+  
+  /* Secondary buttons become glassy */
+  body[data-theme="ihawan"] .btn-neo-sm {
+    border-color: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--theme-text);
+  }
+  body[data-theme="ihawan"] .btn-neo:hover,
+  body[data-theme="ihawan"] .btn-neo-sm:hover {
+    border-color: rgba(217, 119, 6, 0.4);
+    box-shadow: 0px 8px 24px rgba(217, 119, 6, 0.15), inset 0px 1px 1px rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+  body[data-theme="ihawan"] .btn-neo:active,
+  body[data-theme="ihawan"] .btn-neo-sm:active {
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.5);
+    transform: scale(0.96);
+  }
+
+  /* Level 12: Barrio Fiesta (Disciplined elasticity) */
+  body[data-theme="fiesta"] .neo-card,
+  body[data-theme="fiesta"] .btn-neo,
+  body[data-theme="fiesta"] .btn-neo-sm {
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  body[data-theme="fiesta"] .game-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0px 20px 40px rgba(236, 72, 153, 0.15);
+  }
+  body[data-theme="fiesta"] .btn-neo,
+  body[data-theme="fiesta"] .btn-neo-sm {
+    border-radius: 12px;
+  }
+  body[data-theme="fiesta"] .btn-neo:active,
+  body[data-theme="fiesta"] .btn-neo-sm:active {
+    transform: scale(0.9);
+  }
+
+  /* Level 16: Heritage Kitchen (Pristine Magazine Layout) */
+  body[data-theme="heritage"] .neo-card,
+  body[data-theme="heritage"] .neo-shape-sm,
+  body[data-theme="heritage"] .btn-neo,
+  body[data-theme="heritage"] .btn-neo-sm {
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  body[data-theme="heritage"] .game-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0px 25px 50px rgba(69, 26, 3, 0.12);
+  }
+  body[data-theme="heritage"] .btn-neo:hover,
+  body[data-theme="heritage"] .btn-neo-sm:hover {
+    box-shadow: 0px 10px 20px rgba(69, 26, 3, 0.1);
+    transform: translateY(-2px);
+  }
+  body[data-theme="heritage"] .game-card:active,
+  body[data-theme="heritage"] .btn-neo:active,
+  body[data-theme="heritage"] .btn-neo-sm:active {
+    transform: translate(0px, 1px) scale(0.98);
+    box-shadow: 0px 5px 10px rgba(69, 26, 3, 0.05);
+  }
+
+  /* Level 20: Michelin Manila (Absolute Light Frost Glass) */
+  body[data-theme="michelin"] .neo-card,
+  body[data-theme="michelin"] .neo-panel,
+  body[data-theme="michelin"] .neo-shape-sm,
+  body[data-theme="michelin"] .btn-neo,
+  body[data-theme="michelin"] .btn-neo-sm {
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  body[data-theme="michelin"] .game-card:hover {
+    box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.08), inset 0px 1px 2px rgba(255, 255, 255, 1);
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.8);
+  }
+  /* Primary buttons remain solid for high contrast */
+  body[data-theme="michelin"] .btn-neo {
+    background: var(--theme-text);
+    color: var(--theme-panel);
+    border-color: transparent;
+  }
+
+  /* Secondary buttons become glassy */
+  body[data-theme="michelin"] .btn-neo-sm {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(0, 0, 0, 0.05);
+    color: var(--theme-text);
+  }
+  body[data-theme="michelin"] .btn-neo:hover,
+  body[data-theme="michelin"] .btn-neo-sm:hover {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.06), inset 0px 1px 2px rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+  }
+  body[data-theme="michelin"] .game-card:active,
+  body[data-theme="michelin"] .btn-neo:active,
+  body[data-theme="michelin"] .btn-neo-sm:active {
+    transform: scale(0.97);
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.02);
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* ─── Ambient Background ───────────────────────────────────── */
+.app-bg {
+  /* Now handled directly by body styling based on theme variables */
+}
+
+/* ─── Orange Glow Shadow ───────────────────────────────────── */
+.shadow-theme-glow {
+  box-shadow: 0 4px 20px -4px var(--theme-primary), 0 1px 4px -2px var(--theme-primary);
+}
+
+/* ─── Scrollbar Utilities ──────────────────────────────────── */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-primary);
+  opacity: 0.5;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-primary-hover);
+}
+
+/* ─── Icon Stroke Utilities ────────────────────────────────── */
+.icon-stroke-2 { stroke-width: 2px; }
+.icon-stroke-1-5 { stroke-width: 1.5px; }
+
+/* ─── Touch Feedback ───────────────────────────────────────── */
+.touch-active:active {
+  transform: scale(0.95);
+  transition: transform 0.05s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 1.25rem); }
+.pt-safe  { padding-top: env(safe-area-inset-top, 0.5rem); }
+
+/* ─── Status Pulse Dot ─────────────────────────────────────── */
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.55; transform: scale(0.85); }
+}
+.status-pulse { animation: status-pulse 2s ease-in-out infinite; }
+
+/* ─── Fade-slide in ────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fade-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ─── Float Animation ──────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ─── Pulse Glow Animation ─────────────────────────────────── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px rgba(234, 88, 12, 0.2); }
+  50% { box-shadow: 0 0 35px rgba(234, 88, 12, 0.7); }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 2.5s infinite ease-in-out;
+}
+
+/* ─── Bounce Subtle ────────────────────────────────────────── */
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s infinite ease-in-out;
+}
+
+/* ─── Game Card Hover ──────────────────────────────────────── */
+.game-card {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.15s ease;
+}
+.game-card:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px transparent;
+}
+
+/* ─── Gradient text helper ─────────────────────────────────── */
+.text-gradient-orange {
+  background: linear-gradient(90deg, #ea580c, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Lite Mode Performance Overrides ──────────────────────── */
+body.lite-mode * {
+  backdrop-filter: none !important;
+}
+
+body.lite-mode .backdrop-blur-sm, 
+body.lite-mode .backdrop-blur-md,
+body.lite-mode .backdrop-blur-lg {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+body.lite-mode * {
+  transition-property: transform, opacity, color, background-color, border-color !important;
+  transition-duration: 150ms !important;
+}
+
+body.lite-mode .animate-bounce-subtle,
+body.lite-mode .animate-float {
+  animation: none !important;
+  transform: none !important;
 }

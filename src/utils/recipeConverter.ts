@@ -1,4 +1,3 @@
-
 // Converter for external recipe formats
 interface ExternalRecipe {
   _id: { $oid: string };
@@ -13,17 +12,22 @@ interface ExternalRecipe {
   datePublished?: string;
   prepTime?: string;
   description?: string;
+  instructions?: string[]; // Added this to capture real instructions from the database!
 }
 
 interface RecipeTemplate {
+  id?: string;
   name: string;
   description: string;
+  prepTime?: string;
   cookTime: string;
   servings: string;
   difficulty: string;
   mainIngredients: string[];
-  ingredients: Array<{ name: string; amount: string }>;
+  ingredients: string[];
+  ingredientNames?: string[];
   instructions: string[];
+  category?: string;
   tips: string[];
   suggestions: string[];
   relatedDishes: string[];
@@ -94,7 +98,7 @@ function extractMainIngredients(ingredients: Array<{ name: string; amount: strin
   return [...new Set(mainIngredients)]; // Remove duplicates
 }
 
-// Generate basic instructions from ingredients
+// Generate basic instructions from ingredients ONLY IF REAL INSTRUCTIONS ARE MISSING
 function generateInstructions(name: string, ingredients: Array<{ name: string; amount: string }>): string[] {
   const instructions = [
     "Gather and prepare all ingredients according to the measurements listed",
@@ -132,14 +136,19 @@ export function convertExternalRecipe(external: ExternalRecipe): RecipeTemplate 
   const mainIngredients = extractMainIngredients(ingredients);
   
   return {
+    id: external._id ? external._id.$oid : 'db_' + Date.now().toString(),
     name: external.name,
     description: external.description || `A delicious recipe for ${external.name}`,
+    prepTime: external.prepTime ? convertDuration(external.prepTime) : "",
     cookTime: external.cookTime ? convertDuration(external.cookTime) : "30 minutes",
     servings: external.recipeYield ? `${external.recipeYield} servings` : "4 servings",
     difficulty: "Medium", // Default difficulty
+    category: "Cloud DB",
     mainIngredients,
-    ingredients,
-    instructions: generateInstructions(external.name, ingredients),
+    ingredientNames: mainIngredients,
+    ingredients: ingredients.map(i => `${i.amount === 'as needed' ? '' : i.amount} ${i.name}`.trim()),
+    // USE REAL INSTRUCTIONS IF THEY EXIST!
+    instructions: external.instructions && external.instructions.length > 0 ? external.instructions : generateInstructions(external.name, ingredients),
     tips: [
       "Read through the entire recipe before starting",
       "Prepare all ingredients before beginning to cook",

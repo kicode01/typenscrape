@@ -61,6 +61,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				theme: {
+					bg: 'var(--theme-bg)',
+					panel: 'var(--theme-panel)',
+					border: 'var(--theme-border)',
+					text: 'var(--theme-text)',
+					primary: 'var(--theme-primary)',
+					'primary-hover': 'var(--theme-primary-hover)',
+					shadow: 'var(--theme-shadow)',
+					icon: 'var(--theme-icon)'
 				}
 			},
 			borderRadius: {

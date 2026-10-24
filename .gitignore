@@ -22,3 +22,25 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment — .env holds live Firebase, Spoonacular, Gemini and Groq keys
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Local firebase CLI state
+.firebase/
+.vercel/
+
+# Dataset build inputs, not runtime data.
+#   general_recipes.csv is the 69 MB source; layer1.json / layer2.json are
+#   1.4 GB and 126 MB intermediates, both over GitHub's 100 MB file limit.
+#   The app only ever reads public/data/chunk_*.json.
+dataset/
+layer1.json
+layer2.json
+
+# scratch
+tmp_grep.json
+Thumbs.db

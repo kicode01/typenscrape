@@ -1,5 +1,5 @@
-// Service for managing chunked recipe database
-import recipeItems from '../data/recipeitems-latest.json';
+// Service for managing chunked recipe database optimized for low-end devices
+import { idbService } from './idbService';
 
 interface ChunkedRecipeData {
   chunks: any[];
@@ -15,10 +15,6 @@ class RecipeDataService {
     isLoading: false,
     error: null
   };
-
-  private readonly CACHE_KEY = 'recipe_chunks_cache';
-  private readonly CACHE_TIMESTAMP_KEY = 'recipe_chunks_timestamp';
-  private readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
   async loadChunkedDatabase(): Promise<any[]> {
     if (this.data.isLoaded) {
@@ -41,47 +37,60 @@ class RecipeDataService {
       });
     }
 
-    // Check cache first
-    const cachedData = this.getCachedData();
-    if (cachedData) {
-      this.data.chunks = cachedData;
-      this.data.isLoaded = true;
-      console.log(`Loaded ${cachedData.length} recipes from cache`);
-      return cachedData;
-    }
-
     this.data.isLoading = true;
     this.data.error = null;
 
     try {
-      // Simulate loading time to show the loading state
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const allChunks: any[] = [];
       
-      // Load chunks dynamically using dynamic imports
-      const chunkPromises = [];
-      
-      // Try to load each chunk individually to avoid memory issues
-      for (let i = 1; i <= 10; i++) {
+      // Sequentially load chunks to keep peak memory low on budget devices
+      const cacheBust = Date.now();
+      for (let i = 1; i <= 16; i++) {
         try {
-          const chunkModule = await import(`../data/chunk_${i}.json`);
-          chunkPromises.push(chunkModule.default || chunkModule);
+          const response = await fetch(`/data/chunk_${i}.json?v=${cacheBust}`);
+          if (response.ok) {
+            const chunkData = await response.json();
+            
+            // Sanitize data globally
+            const sanitizedData = chunkData.map((recipe: any) => {
+              if (recipe.name) {
+                recipe.name = recipe.name
+                  .replace(/^(how to make|how to cook|recipe for)\s+/i, '')
+                  .replace(/\s+recipe$/i, '')
+                  .trim();
+                
+                // Capitalize first letter of each word
+                recipe.name = recipe.name.replace(/\b\w/g, (c: string) => c.toUpperCase());
+              }
+              
+              if (Array.isArray(recipe.instructions)) {
+                recipe.instructions = recipe.instructions.map((step: string) => 
+                  step.replace(/^step\s*\d+[:.-]?\s*/i, '').trim()
+                );
+              }
+              
+              return recipe;
+            });
+            
+            allChunks.push(...sanitizedData);
+          }
         } catch (error) {
-          console.warn(`Failed to load chunk_${i}.json:`, error);
-          // Continue loading other chunks even if one fails
+          console.warn(`Failed to load /data/chunk_${i}.json:`, error);
         }
       }
-      
-      // Use only the chunks (no base recipes)
-      const allChunks = chunkPromises.flat();
       
       this.data.chunks = allChunks;
       this.data.isLoaded = true;
       this.data.isLoading = false;
 
-      // Cache the loaded data
-      this.setCachedData(allChunks);
+      // Seed into IndexedDB asynchronously without blocking the UI thread or hitting 5MB localStorage limits
+      setTimeout(() => {
+        idbService.bulkInsertRecipes(allChunks).catch(e => {
+          console.warn('IDB background seed error:', e);
+        });
+      }, 500);
 
-      console.log(`Loaded ${allChunks.length} recipes from chunked database (${chunkPromises.length} chunks)`);
+      console.log(`Loaded ${allChunks.length} real recipes from chunked database into low-end optimized storage`);
       return allChunks;
 
     } catch (error) {
@@ -89,49 +98,10 @@ class RecipeDataService {
       this.data.error = error instanceof Error ? error.message : 'Failed to load database';
       this.data.isLoading = false;
       
-      // No fallback - return empty array
       this.data.chunks = [];
       this.data.isLoaded = true;
-      console.log('No recipes available - all chunks failed to load');
       return [];
     }
-  }
-
-  private getCachedData(): any[] | null {
-    try {
-      const timestamp = localStorage.getItem(this.CACHE_TIMESTAMP_KEY);
-      if (!timestamp) return null;
-
-      const age = Date.now() - parseInt(timestamp);
-      if (age > this.CACHE_DURATION) {
-        // Cache expired
-        this.clearCache();
-        return null;
-      }
-
-      const cachedData = localStorage.getItem(this.CACHE_KEY);
-      if (!cachedData) return null;
-
-      return JSON.parse(cachedData);
-    } catch (error) {
-      console.warn('Error reading cached data:', error);
-      this.clearCache();
-      return null;
-    }
-  }
-
-  private setCachedData(data: any[]): void {
-    try {
-      localStorage.setItem(this.CACHE_KEY, JSON.stringify(data));
-      localStorage.setItem(this.CACHE_TIMESTAMP_KEY, Date.now().toString());
-    } catch (error) {
-      console.warn('Error caching data:', error);
-    }
-  }
-
-  private clearCache(): void {
-    localStorage.removeItem(this.CACHE_KEY);
-    localStorage.removeItem(this.CACHE_TIMESTAMP_KEY);
   }
 
   getLoadingState() {
@@ -150,10 +120,8 @@ class RecipeDataService {
       isLoading: false,
       error: null
     };
-    this.clearCache();
   }
 
-  // Get database statistics
   getDatabaseStats() {
     return {
       totalRecipes: this.data.chunks.length,

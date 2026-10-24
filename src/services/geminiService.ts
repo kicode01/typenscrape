@@ -1,58 +1,251 @@
+const SYSTEM_PROMPT = `You are an elite Michelin-Star Executive Chef and a culinary genius. Your goal is to create a stunning, professional recipe using the provided ingredients. 
 
-const SYSTEM_PROMPT = `You are a professional chef assistant. Create a detailed recipe using the given ingredients. Return a JSON object with this exact structure:
+CRITICAL RULES:
+1. GIBBERISH DETECTION: If the user provides random letters, completely inedible items (like 'rocks', 'wood', 'hdahfjeaioufjiaif'), or gibberish, you MUST return EXACTLY this JSON and nothing else:
+{"error": "INVALID_INGREDIENTS"}
+2. FLAVOR PAIRING: Automatically introduce essential pantry staples (oil, salt, pepper, garlic, acid) to make the dish actually taste good, even if the user didn't list them.
+3. CONTEXT AWARENESS: Consider the requested preferences. If none are provided, make it a balanced, modern dish.
+4. GAMIFICATION: You must act as a Game Master and assign RPG-style stats and a Rarity Tier to the recipe based on its complexity, nutritional value, and synergy.
+5. Return a JSON object with this exact structure:
 {
-  "name": "Recipe Name",
-  "description": "Brief description",
+  "name": "Creative & Appetizing Recipe Name",
+  "description": "A mouth-watering description of the dish",
   "cookTime": "X minutes",
   "servings": "X servings",
   "difficulty": "Easy/Medium/Hard",
-  "ingredients": [{"name": "ingredient name", "amount": "measurement"}],
-  "instructions": ["step 1", "step 2"],
-  "tips": ["tip 1", "tip 2"],
-  "suggestions": ["ingredient 1", "ingredient 2"],
-  "relatedDishes": ["dish 1", "dish 2"]
+  "rarity": "Common|Rare|Epic|Legendary",
+  "category": "Breakfast|Chicken|Beef|Pork|Seafood|Pasta|Soup|Salad|Dessert|Others",
+  "stats": {
+    "prepSpeed": 85,
+    "health": 60,
+    "flavor": 95,
+    "budget": 70
+  },
+  "ingredients": ["1 cup ingredient name", "2 tbsp measurement"],
+  "instructions": ["Step 1 with professional technique", "Step 2..."],
+  "tips": ["Chef's secret tip 1", "Chef's secret tip 2"],
+  "suggestions": ["Missing ingredient that would make this better"],
+  "relatedDishes": ["Related dish 1"]
 }`;
 
 export async function generateRecipeWithGemini(
   ingredients: string[], 
   preferences: string, 
-  apiKey: string
+  apiKey?: string,
+  language: 'en' | 'fil' = 'en'
 ): Promise<any> {
-  const userPrompt = `Create a recipe using these ingredients: ${ingredients.join(', ')}. ${preferences ? `Preferences: ${preferences}` : ''}`;
-  const fullPrompt = `${SYSTEM_PROMPT}\n\n${userPrompt}`;
+  const effectiveGeminiKey = apiKey?.trim() || import.meta.env.VITE_GEMINI_API_KEY;
+  const effectiveGroqKey = import.meta.env.VITE_GROQ_API_KEY;
 
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: fullPrompt }] }],
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.7,
-        maxOutputTokens: 2048,
-      },
-    }),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error('Gemini API call failed:', errorData);
-    throw new Error('API call failed');
+  if (!effectiveGeminiKey && !effectiveGroqKey) {
+    throw new Error('No AI API keys available');
   }
 
-  const data = await response.json();
-  if (data.candidates && data.candidates.length > 0) {
-    const recipeText = data.candidates[0].content.parts[0].text;
+  const userPrompt = `Create a recipe using these ingredients: ${ingredients.join(', ')}. ${preferences ? `Preferences: ${preferences}` : ''}`;
+  
+  const languageRule = language === 'fil' 
+    ? '\nCRITICAL RULE 6: Translate the recipe output (name, description, ingredients, instructions, tips, suggestions) into fluent Filipino (Tagalog). Keep technical words that have no direct translation.'
+    : '';
+
+  const fullPrompt = `${SYSTEM_PROMPT}${languageRule}\n\n${userPrompt}`;
+
+  let recipeText = '';
+
+  // 1. Try Groq First (Insanely fast Llama 3)
+  if (effectiveGroqKey) {
     try {
-      return JSON.parse(recipeText);
-    } catch (parseError) {
-      console.error('Failed to parse AI response:', parseError);
-      throw new Error('Failed to parse AI response');
+      console.log('Attempting to generate recipe with Groq...');
+      const groqResponse = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${effectiveGroqKey}`
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [{ role: 'user', content: fullPrompt }],
+          response_format: { type: "json_object" }
+        })
+      });
+
+      if (groqResponse.ok) {
+        const groqData = await groqResponse.json();
+        recipeText = groqData.choices[0].message.content;
+      } else {
+        console.warn('Groq failed, falling back to Gemini...', await groqResponse.text());
+      }
+    } catch (err) {
+      console.warn('Groq request threw an error, falling back to Gemini...', err);
     }
-  } else {
-    console.error('Gemini API call was ok, but no candidates returned.', data);
-    throw new Error('No recipe generated by API');
+  }
+
+  // 2. Fallback to Gemini if Groq failed or isn't configured
+  if (!recipeText && effectiveGeminiKey) {
+    console.log('Generating recipe with Gemini...');
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${effectiveGeminiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: fullPrompt }] }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 2048,
+          responseMimeType: "application/json"
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Gemini API call failed:', errorData);
+      throw new Error('All AI APIs failed');
+    }
+
+    const data = await response.json();
+    if (data.candidates && data.candidates.length > 0) {
+      const parts = data.candidates[0].content?.parts || [];
+      const textPart = parts.find((p: any) => typeof p.text === 'string');
+      
+      if (!textPart) {
+        throw new Error('AI_FAILED_NO_TEXT');
+      }
+      recipeText = textPart.text;
+    } else {
+      throw new Error('No recipe generated by API');
+    }
+  }
+
+  if (!recipeText) {
+    throw new Error('Failed to generate recipe with any available AI.');
+  }
+    
+    // Check if the AI returned the gibberish error
+    if (recipeText.includes("INVALID_INGREDIENTS")) {
+      throw new Error('INVALID_INGREDIENTS');
+    }
+
+    try {
+      let cleanedText = recipeText.replace(/```json/g, '').replace(/```/g, '').trim();
+      
+      // Robust JSON extraction in case the AI added conversational text
+      const firstBrace = cleanedText.indexOf('{');
+      const lastBrace = cleanedText.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1) {
+        cleanedText = cleanedText.substring(firstBrace, lastBrace + 1);
+      }
+
+      const rawRecipe = JSON.parse(cleanedText);
+      // Ensure the generated recipe conforms to FilipinoDish / RecipeCard expectations
+      return {
+        id: 'ai_' + Date.now().toString(),
+        name: rawRecipe.name || 'AI Generated Recipe',
+        description: rawRecipe.description || '',
+        prepTime: '10 mins',
+        cookTime: rawRecipe.cookTime || '20 mins',
+        totalTime: '',
+        servings: rawRecipe.servings || '2',
+        ingredients: rawRecipe.ingredients || [],
+        ingredientNames: ingredients,
+        instructions: rawRecipe.instructions || [],
+        source: 'Smart Compiler',
+        category: rawRecipe.category || 'Others',
+        rarity: rawRecipe.rarity || 'Common',
+        stats: rawRecipe.stats || {
+          prepSpeed: 50,
+          health: 50,
+          flavor: 50,
+          budget: 50
+        }
+      };
+    } catch (parseError: any) {
+      console.error('Failed to parse AI JSON:', recipeText, parseError);
+      throw new Error(`Parse error: ${parseError.message || parseError}`);
+    }
+}
+
+export async function translateRecipeToFilipino(recipe: any, apiKey?: string): Promise<any> {
+  const effectiveGeminiKey = apiKey?.trim() || import.meta.env.VITE_GEMINI_API_KEY;
+  const effectiveGroqKey = import.meta.env.VITE_GROQ_API_KEY;
+
+  if (!effectiveGeminiKey && !effectiveGroqKey) {
+    throw new Error('No AI API keys available');
+  }
+
+  const prompt = `Translate the following English recipe into fluent Filipino (Tagalog).
+Return ONLY a JSON object with the exact same structure as the input, but with the text translated.
+Keep numerical values, stats, category, and rarity the same.
+
+Input Recipe:
+${JSON.stringify(recipe, null, 2)}`;
+
+  let translatedText = '';
+
+  if (effectiveGroqKey) {
+    try {
+      const groqResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${effectiveGroqKey}`
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [{ role: 'user', content: prompt }],
+          response_format: { type: "json_object" }
+        })
+      });
+
+      if (groqResponse.ok) {
+        const groqData = await groqResponse.json();
+        translatedText = groqData.choices[0].message.content;
+      }
+    } catch (err) {
+      console.warn('Groq translation failed', err);
+    }
+  }
+
+  if (!translatedText && effectiveGeminiKey) {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${effectiveGeminiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.3,
+          responseMimeType: "application/json"
+        },
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.candidates && data.candidates.length > 0) {
+        const textPart = data.candidates[0].content?.parts?.find((p: any) => typeof p.text === 'string');
+        if (textPart) {
+          translatedText = textPart.text;
+        }
+      }
+    }
+  }
+
+  if (!translatedText) {
+    throw new Error('Failed to translate recipe');
+  }
+
+  try {
+    let cleanedText = translatedText.replace(/```json/g, '').replace(/```/g, '').trim();
+    const firstBrace = cleanedText.indexOf('{');
+    const lastBrace = cleanedText.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace !== -1) {
+      cleanedText = cleanedText.substring(firstBrace, lastBrace + 1);
+    }
+    const translatedRecipe = JSON.parse(cleanedText);
+    return { ...recipe, ...translatedRecipe, id: recipe.id }; // preserve original ID
+  } catch (e) {
+    throw new Error('Failed to parse translated recipe JSON');
   }
 }

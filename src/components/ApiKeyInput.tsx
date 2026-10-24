@@ -45,7 +45,7 @@ export const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ apiKey, setApiKey }) =
               <button
                 type="button"
                 onClick={() => setShowKey(!showKey)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-theme-icon hover:text-theme-text"
               >
                 {showKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -57,8 +57,8 @@ export const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ apiKey, setApiKey }) =
         </div>
       ) : (
         <div className="space-y-3">
-          <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg border">
-            <span className="text-sm text-gray-600">
+          <div className="flex items-center justify-between bg-theme-panel p-3 rounded-[var(--theme-radius)] border border-theme-border">
+            <span className="text-sm text-theme-text opacity-70">
               API Key: {showKey ? apiKey : '•'.repeat(20)}
             </span>
             <div className="flex space-x-2">

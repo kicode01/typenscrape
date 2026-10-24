@@ -203,30 +203,8 @@ function generateCreativeName(ingredients: string[], analysis: any): string {
 
 export async function generateOfflineRecipe(ingredients: string[]): Promise<any> {
   const analysis = analyzeIngredients(ingredients);
-  const database = await getRecipeDatabase();
 
-  if (database.length > 0) {
-    const matchingRecipes = findMatchingRecipes(ingredients, database);
-    if (matchingRecipes.length > 0) {
-      const baseRecipe = matchingRecipes[0];
-      const customizedIngredients = baseRecipe.ingredients.filter(ing => ingredients.some(userIng => userIng.toLowerCase().includes(ing.name.toLowerCase().split(',')[0]) || ing.name.toLowerCase().includes(userIng.toLowerCase())));
-      const additionalIngredients = ingredients.filter(userIng => !baseRecipe.ingredients.some(recipeIng => recipeIng.name.toLowerCase().includes(userIng.toLowerCase()) || userIng.toLowerCase().includes(recipeIng.name.toLowerCase().split(',')[0]))).map(ing => ({ name: ing, amount: "to taste" }));
-      if (!customizedIngredients.some(ing => ing.name.toLowerCase().includes('salt'))) customizedIngredients.push({ name: "Salt", amount: "to taste" });
-      if (!customizedIngredients.some(ing => ing.name.toLowerCase().includes('pepper'))) customizedIngredients.push({ name: "Black pepper", amount: "to taste" });
-
-      return {
-        ...baseRecipe,
-        name: generateCreativeName(ingredients, analysis),
-        description: `A delicious ${analysis.cuisineType} inspired dish featuring ${ingredients.slice(0, 3).join(', ')}.`,
-        difficulty: analysis.difficulty,
-        ingredients: [...customizedIngredients, ...additionalIngredients],
-        instructions: generateSmartInstructions(analysis, ingredients),
-        tips: generateSmartTips(analysis, ingredients),
-        suggestions: generateSmartSuggestions(analysis, ingredients),
-      };
-    }
-  }
-
+  // 100% Procedural Generation (No Database Interference!)
   const baseIngredients = ingredients.map(ing => ({ name: ing, amount: "as needed" }));
   if (!analysis.oils.length) baseIngredients.push({ name: "Olive oil", amount: "2 tbsp" });
   baseIngredients.push({ name: "Salt", amount: "to taste" }, { name: "Black pepper", amount: "to taste" });
@@ -244,10 +222,12 @@ export async function generateOfflineRecipe(ingredients: string[]): Promise<any>
     cookTime,
     servings: ingredients.length > 6 ? "6 servings" : "4 servings",
     difficulty: analysis.difficulty,
-    ingredients: baseIngredients,
+    ingredients: baseIngredients.map((i: any) => `${i.amount || ''} ${i.name || ''}`.trim()),
+    ingredientNames: ingredients,
     instructions: generateSmartInstructions(analysis, ingredients),
     tips: generateSmartTips(analysis, ingredients),
     suggestions: generateSmartSuggestions(analysis, ingredients),
     relatedDishes: Object.values(cuisinePatterns[analysis.cuisineType] || ['pasta', 'rice', 'stir fry']).slice(0, 4),
+    source: 'TypenScrape Smart Compiler'
   };
 }

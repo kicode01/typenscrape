@@ -1,0 +1,22 @@
+{
+  "short_name": "typenscrape",
+  "name": "typenscrape",
+  "description": "Type your cravings. Scrape your next meal. Works 100% offline without internet.",
+  "icons": [
+    {
+      "src": "/lovable-uploads/cef3f1b2-69eb-49e3-89aa-4cac84df549a.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/lovable-uploads/cef3f1b2-69eb-49e3-89aa-4cac84df549a.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#FFF7ED",
+  "theme_color": "#F97316",
+  "display": "standalone",
+  "orientation": "portrait"
+}
