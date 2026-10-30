@@ -41,6 +41,9 @@ dataset/
 layer1.json
 layer2.json
 
-# scratch
+# scratch & test files
 tmp_grep.json
 Thumbs.db
+test-*.js
+test-*.mjs
+vite.config.ts.timestamp-*
