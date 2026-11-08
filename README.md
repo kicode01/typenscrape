@@ -11,10 +11,10 @@
 
 <p align="center">
   <a href="brag-output/brag.mp4">
-    <img src="brag-output/brag.jpg" alt="TypenScrape Launch Video" width="850" />
+    <img src="brag-output/brag.gif" alt="TypenScrape Launch Demo" width="850" />
   </a>
   <br />
-  <em>🎬 <strong>Watch the Launch Video</strong>: <a href="brag-output/brag.mp4"><code>brag-output/brag.mp4</code></a> — <em>Ingredients first. Life stories never.</em></em>
+  <em>🎬 <strong>Live Demo Preview</strong> (Autoplaying above). Click image or <a href="brag-output/brag.mp4">watch full video with sound (<code>brag-output/brag.mp4</code>)</a></em>
 </p>
 
 ---
