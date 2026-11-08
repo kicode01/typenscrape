@@ -9,13 +9,7 @@
 [![Sync](https://img.shields.io/badge/Cloud-Firebase_Firestore-orange.svg)](https://firebase.google.com)
 [![License](https://img.shields.io/badge/License-MIT-gray.svg)](LICENSE)
 
-<p align="center">
-  <a href="brag-output/brag.mp4">
-    <img src="brag-output/brag.gif" alt="TypenScrape Launch Demo" width="850" />
-  </a>
-  <br />
-  <em>🎬 <strong>Live Demo Preview</strong> (Autoplaying above). Click image or <a href="brag-output/brag.mp4">watch full video with sound (<code>brag-output/brag.mp4</code>)</a></em>
-</p>
+https://github.com/user-attachments/assets/70d1d8a0-d276-45a2-9ae3-407d4105ae36
 
 ---
 
