@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>TypenScrape Launch Video</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --ground: #FAFAF9;
+        --ink: #1C1917;
+        --orange: #C2410C;
+        --orange-bright: #EA580C;
+        --orange-light: #F97316;
+        --gold: #B45309;
+        --gold-bg: #FEF3C7;
+        --emerald: #047857;
+        --emerald-bg: #D1FAE5;
+        --charcoal: #18181B;
+        --font-display: 'Nunito', 'Space Grotesk', sans-serif;
+        --font-body: 'Inter', sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--ground);
+        font-family: var(--font-body);
+        color: var(--ink);
+        user-select: none;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        background: var(--ground);
+        overflow: hidden;
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      /* Neobrutalist tactile card style */
+      .neo-card {
+        background: #FFFFFF;
+        border: 4px solid var(--ink);
+        box-shadow: 8px 8px 0px var(--ink);
+        border-radius: 20px;
+      }
+
+      /* SCENE 1: Anti-Blog Hook */
+      #scene-1 {
+        background: #F5F5F4;
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .blog-parody {
+        width: 1100px;
+        padding: 40px;
+        background: #FFFFFF;
+        border: 4px solid #78716C;
+        border-radius: 16px;
+        box-shadow: 8px 8px 0px #A8A29E;
+        color: #44403C;
+      }
+
+      .cookie-banner {
+        position: absolute;
+        bottom: 110px;
+        width: 850px;
+        padding: 20px 30px;
+        background: #FEF3C7;
+        border: 3px dashed #B45309;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #78350F;
+        font-weight: 700;
+        font-size: 22px;
+      }
+
+      .slam-sticker {
+        position: absolute;
+        padding: 45px 80px;
+        background: #1C1917;
+        color: #FFFFFF;
+        border: 6px solid #EA580C;
+        box-shadow: 14px 14px 0px #EA580C;
+        border-radius: 24px;
+        text-align: center;
+        transform: rotate(-3deg) scale(0);
+        z-index: 50;
+      }
+
+      .slam-title {
+        font-family: var(--font-display);
+        font-size: 76px;
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        color: #FFFFFF;
+      }
+
+      .slam-highlight {
+        color: #F97316;
+      }
+
+      /* SCENE 2: The Pantry Forge */
+      #scene-2 {
+        background: #FAFAF9;
+      }
+
+      .scene-title {
+        font-family: var(--font-display);
+        font-size: 58px;
+        font-weight: 900;
+        margin-bottom: 14px;
+        color: #1C1917;
+        letter-spacing: -0.02em;
+      }
+
+      .scene-subtitle {
+        font-size: 28px;
+        color: #292524;
+        font-weight: 700;
+        margin-bottom: 50px;
+      }
+
+      .pantry-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        width: 1400px;
+      }
+
+      .ingredient-card {
+        padding: 30px;
+        background: #FFFFFF;
+        border: 4px solid #1C1917;
+        box-shadow: 8px 8px 0px #1C1917;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transform: translateY(60px);
+        opacity: 0;
+      }
+
+      .ingredient-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+      }
+
+      .ingredient-name {
+        font-family: var(--font-display);
+        font-size: 30px;
+        font-weight: 900;
+        color: #1C1917;
+        margin-bottom: 10px;
+      }
+
+      .ingredient-tag {
+        display: inline-block;
+        padding: 6px 16px;
+        font-size: 18px;
+        font-weight: 800;
+        border-radius: 9999px;
+        border: 2px solid #1C1917;
+      }
+
+      .forge-btn {
+        margin-top: 50px;
+        padding: 22px 60px;
+        background: #EA580C;
+        color: #FFFFFF;
+        font-family: var(--font-display);
+        font-size: 34px;
+        font-weight: 900;
+        border: 4px solid #1C1917;
+        box-shadow: 8px 8px 0px #1C1917;
+        border-radius: 16px;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      /* SCENE 3: Dual-Engine AI Forge */
+      #scene-3 {
+        background: #18181B;
+        color: #FFFFFF;
+      }
+
+      .ai-header-tag {
+        padding: 10px 28px;
+        background: #27272A;
+        border: 3px solid #F97316;
+        box-shadow: 4px 4px 0px #EA580C;
+        border-radius: 9999px;
+        font-family: var(--font-display);
+        font-size: 24px;
+        font-weight: 800;
+        color: #FFFFFF;
+        margin-bottom: 34px;
+      }
+
+      .dual-engine-box {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        margin-bottom: 50px;
+      }
+
+      .engine-card {
+        padding: 26px 48px;
+        background: #27272A;
+        border: 3px solid #F97316;
+        box-shadow: 6px 6px 0px #EA580C;
+        border-radius: 16px;
+        font-family: var(--font-display);
+        font-size: 34px;
+        font-weight: 800;
+        color: #FFFFFF;
+        text-align: center;
+      }
+
+      .engine-sub {
+        font-size: 20px;
+        font-family: var(--font-body);
+        color: #E4E4E7;
+        margin-top: 8px;
+        font-weight: 600;
+      }
+
+      .engine-plus {
+        font-family: var(--font-display);
+        font-size: 52px;
+        font-weight: 900;
+        color: #F97316;
+      }
+
+      .forge-status-box {
+        width: 900px;
+        padding: 34px;
+        background: #09090B;
+        border: 3px solid #52525B;
+        border-radius: 16px;
+        text-align: center;
+      }
+
+      .forge-status-text {
+        font-family: var(--font-display);
+        font-size: 36px;
+        font-weight: 800;
+        color: #FEF08A;
+        margin-bottom: 24px;
+      }
+
+      .forge-progress-track {
+        width: 100%;
+        height: 20px;
+        background: #27272A;
+        border-radius: 9999px;
+        overflow: hidden;
+        border: 2px solid #52525B;
+      }
+
+      .forge-progress-fill {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, #EA580C, #F59E0B);
+        border-radius: 9999px;
+      }
+
+      /* SCENE 4: Legendary Unbox */
+      #scene-4 {
+        background: #FAFAF9;
+      }
+
+      .masterpiece-card {
+        width: 1350px;
+        padding: 50px 60px;
+        background: #FFFFFF;
+        border: 5px solid #1C1917;
+        box-shadow: 14px 14px 0px #1C1917;
+        border-radius: 28px;
+        display: grid;
+        grid-template-columns: 1.25fr 0.75fr;
+        gap: 50px;
+        position: relative;
+        transform: scale(0.85);
+        opacity: 0;
+      }
+
+      .legendary-badge {
+        position: absolute;
+        top: -26px;
+        left: 50px;
+        padding: 10px 30px;
+        background: #FEF3C7;
+        border: 4px solid #1C1917;
+        box-shadow: 4px 4px 0px #1C1917;
+        border-radius: 9999px;
+        font-family: var(--font-display);
+        font-size: 24px;
+        font-weight: 900;
+        color: #78350F;
+        letter-spacing: 0.08em;
+      }
+
+      .recipe-main-title {
+        font-family: var(--font-display);
+        font-size: 50px;
+        font-weight: 900;
+        color: #1C1917;
+        line-height: 1.15;
+        margin-top: 15px;
+        margin-bottom: 14px;
+      }
+
+      .recipe-desc {
+        font-size: 24px;
+        color: #292524;
+        line-height: 1.5;
+        margin-bottom: 28px;
+        font-weight: 600;
+      }
+
+      .steps-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .step-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 22px;
+        font-weight: 700;
+        color: #1C1917;
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      .step-num {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #1C1917;
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 20px;
+      }
+
+      .stats-panel {
+        background: #F5F5F4;
+        border: 4px solid #1C1917;
+        box-shadow: 6px 6px 0px #1C1917;
+        border-radius: 20px;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .xp-box {
+        text-align: center;
+        padding: 20px;
+        background: #FEF3C7;
+        border: 3px solid #1C1917;
+        border-radius: 14px;
+      }
+
+      .xp-label {
+        font-size: 18px;
+        font-weight: 800;
+        color: #78350F;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .xp-val {
+        font-family: var(--font-display);
+        font-size: 56px;
+        font-weight: 900;
+        color: #1C1917;
+      }
+
+      .radar-pills {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .radar-pill-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 18px;
+        background: #FFFFFF;
+        border: 3px solid #1C1917;
+        border-radius: 10px;
+        font-weight: 800;
+        font-size: 20px;
+      }
+
+      /* SCENE 5: Outro */
+      #scene-5 {
+        background: #FAFAF9;
+      }
+
+      .brand-title {
+        font-family: var(--font-display);
+        font-size: 100px;
+        font-weight: 900;
+        color: #EA580C;
+        text-shadow: 6px 6px 0px #1C1917;
+        letter-spacing: -0.03em;
+        margin-bottom: 12px;
+      }
+
+      .brand-tagline {
+        font-size: 34px;
+        font-weight: 800;
+        color: #1C1917;
+        margin-bottom: 40px;
+      }
+
+      .features-row {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 45px;
+      }
+
+      .feature-badge {
+        padding: 18px 34px;
+        background: #FFFFFF;
+        border: 4px solid #1C1917;
+        box-shadow: 6px 6px 0px #1C1917;
+        border-radius: 9999px;
+        font-family: var(--font-display);
+        font-size: 26px;
+        font-weight: 900;
+        color: #1C1917;
+      }
+
+      .cta-punchline {
+        font-family: var(--font-display);
+        font-size: 40px;
+        font-weight: 900;
+        color: #1C1917;
+        padding: 20px 52px;
+        background: #FEF3C7;
+        border: 4px solid #1C1917;
+        box-shadow: 8px 8px 0px #1C1917;
+        border-radius: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="20"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Audio Tracks -->
+      <audio
+        id="bgm"
+        data-start="0"
+        data-duration="20"
+        data-track-index="0"
+        data-volume="0.65"
+        data-fade-in="0.2"
+        data-fade-out="0.8"
+        src="assets/music/happy-beats-business-moves-vol-1-by-ende-dot-app.mp3"
+      ></audio>
+
+      <audio
+        id="sfx-slam"
+        data-start="1.5"
+        data-duration="1.48"
+        data-track-index="1"
+        data-volume="0.85"
+        src="assets/sfx/impact/impactBell_heavy_000.ogg"
+      ></audio>
+
+      <audio
+        id="sfx-card1"
+        data-start="4.0"
+        data-duration="0.69"
+        data-track-index="2"
+        data-volume="0.75"
+        src="assets/sfx/casino/card-place-1.ogg"
+      ></audio>
+
+      <audio
+        id="sfx-card2"
+        data-start="4.8"
+        data-duration="0.69"
+        data-track-index="3"
+        data-volume="0.75"
+        src="assets/sfx/casino/card-place-1.ogg"
+      ></audio>
+
+      <audio
+        id="sfx-card3"
+        data-start="5.6"
+        data-duration="0.69"
+        data-track-index="4"
+        data-volume="0.75"
+        src="assets/sfx/casino/card-place-1.ogg"
+      ></audio>
+
+      <audio
+        id="sfx-card4"
+        data-start="6.4"
+        data-duration="0.69"
+        data-track-index="5"
+        data-volume="0.75"
+        src="assets/sfx/casino/card-place-1.ogg"
+      ></audio>
+
+      <audio
+        id="sfx-forge-btn"
+        data-start="7.2"
+        data-duration="0.09"
+        data-track-index="6"
+        data-volume="0.8"
+        src="assets/sfx/ui/click1.ogg"
+      ></audio>
+
+      <audio
+        id="sfx-ai-drop"
+        data-start="8.5"
+        data-duration="0.11"
+        data-track-index="7"
+        data-volume="0.75"
+        src="assets/sfx/interface/drop_001.ogg"
+      ></audio>
+
+      <audio
+        id="sfx-legendary"
+        data-start="12.0"
+        data-duration="1.48"
+        data-track-index="8"
+        data-volume="0.9"
+        src="assets/sfx/impact/impactBell_heavy_000.ogg"
+      ></audio>
+
+      <!-- SCENE 1: The Anti-Blog Hook (0.0s - 3.5s) -->
+      <div id="scene-1" class="scene" data-start="0" data-duration="3.5">
+        <div class="blog-parody" id="blog-paper" data-layout-allow-occlusion data-layout-ignore>
+          <div style="font-size: 20px; font-weight: 800; text-transform: uppercase; color: #9A3412; margin-bottom: 8px;">Auntie Clara's Cooking Journey</div>
+          <h2 style="font-family: var(--font-display); font-size: 40px; color: #1C1917; margin-bottom: 14px;">Chapter 3: The Early Autumn Wind in Verona...</h2>
+          <p style="font-size: 20px; line-height: 1.6; margin-bottom: 14px; color: #292524;">
+            It was a crisp Tuesday morning in 2014 when my third cousin’s neighbor first smelled wild oregano simmering beneath the Tuscan hills. To understand the philosophy of seasoning, we must first reflect on...
+          </p>
+          <div style="height: 12px; background: #D6D3D1; border-radius: 6px; width: 85%; margin-bottom: 8px;"></div>
+          <div style="height: 12px; background: #D6D3D1; border-radius: 6px; width: 65%;"></div>
+        </div>
+
+        <div class="cookie-banner" id="cookie-banner" data-layout-allow-occlusion data-layout-ignore>
+          <span>🍪 We and 498 partners track your onion slicing habits.</span>
+          <button style="padding: 10px 22px; background: #D97706; color: #FFFFFF; border: 2px solid #78350F; font-weight: 900; font-size: 16px; border-radius: 8px;">ACCEPT ALL</button>
+        </div>
+
+        <div class="slam-sticker" id="slam-sticker">
+          <div class="slam-title">
+            INGREDIENTS FIRST.<br />
+            <span class="slam-highlight">LIFE STORIES NEVER.</span>
+          </div>
+          <div style="margin-top: 18px; font-size: 28px; font-weight: 900; color: #FEF08A; letter-spacing: 0.05em;">
+            100% OFFLINE • ZERO ADS • ZERO BLOG INTROS
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 2: The Pantry Forge (3.5s - 8.5s) -->
+      <div id="scene-2" class="scene" data-start="3.5" data-duration="5.0">
+        <h1 class="scene-title">WHAT'S IN YOUR FRIDGE?</h1>
+        <div class="scene-subtitle">Select any random leftovers. TypenScrape builds the recipe.</div>
+
+        <div class="pantry-grid">
+          <div class="ingredient-card" id="card-1">
+            <div class="ingredient-icon">🥩</div>
+            <div class="ingredient-name">Beef</div>
+            <span class="ingredient-tag" style="background: #FEE2E2; color: #991B1B;">STR Build</span>
+          </div>
+
+          <div class="ingredient-card" id="card-2">
+            <div class="ingredient-icon">🧄</div>
+            <div class="ingredient-name">Crushed Garlic</div>
+            <span class="ingredient-tag" style="background: #FEF3C7; color: #92400E;">Aromatic</span>
+          </div>
+
+          <div class="ingredient-card" id="card-3">
+            <div class="ingredient-icon">🍶</div>
+            <div class="ingredient-name">Soy Sauce</div>
+            <span class="ingredient-tag" style="background: #E0E7FF; color: #3730A3;">Umami Core</span>
+          </div>
+
+          <div class="ingredient-card" id="card-4">
+            <div class="ingredient-icon">🍾</div>
+            <div class="ingredient-name">Cane Vinegar</div>
+            <span class="ingredient-tag" style="background: #D1FAE5; color: #065F46;">Acid Balance</span>
+          </div>
+        </div>
+
+        <button class="forge-btn" id="forge-btn">⚡ FORGE RECIPE NOW</button>
+      </div>
+
+      <!-- SCENE 3: Dual-Engine AI Synthesis (8.5s - 12.0s) -->
+      <div id="scene-3" class="scene" data-start="8.5" data-duration="3.5">
+        <div class="ai-header-tag">INTELLIGENT KITCHEN ORCHESTRATION</div>
+
+        <div class="dual-engine-box">
+          <div class="engine-card">
+            ⚡ GROQ LLAMA 3
+            <div class="engine-sub">Instant Sub-Second Synthesis</div>
+          </div>
+          <div class="engine-plus">×</div>
+          <div class="engine-card">
+            ✦ GOOGLE GEMINI
+            <div class="engine-sub">Michelin Culinary Logic</div>
+          </div>
+        </div>
+
+        <div class="forge-status-box">
+          <div class="forge-status-text" id="ai-status">Forging base ingredients...</div>
+          <div class="forge-progress-track">
+            <div class="forge-progress-fill" id="ai-progress"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 4: Legendary Unbox (12.0s - 16.5s) -->
+      <div id="scene-4" class="scene" data-start="12.0" data-duration="4.5">
+        <div class="masterpiece-card" id="masterpiece">
+          <div class="legendary-badge">★ LEGENDARY DISH ★</div>
+
+          <div>
+            <div class="recipe-main-title">Classic Bistek Beef Adobo</div>
+            <div class="recipe-desc">
+              Tender beef braised in dark soy sauce, native cane vinegar, toasted garlic confit, and cracked black pepper.
+            </div>
+
+            <div class="steps-list">
+              <div class="step-item" id="step-1">
+                <div class="step-num">1</div>
+                <div>Sear marinated beef in hot pan (4 mins)</div>
+              </div>
+              <div class="step-item" id="step-2">
+                <div class="step-num">2</div>
+                <div>Simmer with soy, vinegar & garlic (18 mins)</div>
+              </div>
+              <div class="step-item" id="step-3">
+                <div class="step-num">3</div>
+                <div>Reduce sauce to deep glossy glaze (3 mins)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-panel">
+            <div class="xp-box">
+              <div class="xp-label">Culinary Mastery</div>
+              <div class="xp-val" id="xp-counter">+250 XP</div>
+            </div>
+
+            <div class="radar-pills">
+              <div class="radar-pill-item">
+                <span>Flavor Intensity</span>
+                <span style="color: #9A3412;">98 / 100</span>
+              </div>
+              <div class="radar-pill-item">
+                <span>Prep Speed</span>
+                <span style="color: #065F46;">25 Mins</span>
+              </div>
+              <div class="radar-pill-item">
+                <span>Budget Efficiency</span>
+                <span style="color: #1E40AF;">₱180 Total</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 5: Outro & Call to Action (16.5s - 20.0s) -->
+      <div id="scene-5" class="scene" data-start="16.5" data-duration="3.5">
+        <h1 class="brand-title">TypenScrape</h1>
+        <div class="brand-tagline">The Intelligent, Offline-First Pocket Sous-Chef</div>
+
+        <div class="features-row">
+          <div class="feature-badge" id="feat-1">⚡ 100% Offline (IndexedDB)</div>
+          <div class="feature-badge" id="feat-2">🚫 Zero Ads & Trackers</div>
+          <div class="feature-badge" id="feat-3">📱 Installable PWA</div>
+        </div>
+
+        <div class="cta-punchline" id="cta-punchline">
+          Cook what you have. Master the kitchen.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // ─── SCENE 1: Anti-Blog Hook (0.0s - 3.5s) ───
+      // Frame 0: Blog paper already present on canvas
+      tl.set("#blog-paper", { y: 0, opacity: 1 }, 0);
+      tl.set("#cookie-banner", { y: 0, opacity: 1 }, 0);
+
+      // Beat-locked slam at 1.50s (strong audio hit)
+      // beat-locked: 1.50s
+      tl.fromTo("#slam-sticker",
+        { scale: 2.2, opacity: 0, rotate: -15 },
+        { scale: 1, opacity: 1, rotate: -3, duration: 0.35, ease: "back.out(2.2)" },
+        1.50
+      );
+      tl.to("#blog-paper, #cookie-banner", { filter: "blur(6px) grayscale(80%)", duration: 0.3 }, 1.50);
+      tl.to("#scene-1", { autoAlpha: 0, duration: 0.25 }, 3.3);
+
+      // ─── SCENE 2: The Pantry Forge (3.5s - 8.5s) ───
+      tl.set("#scene-2", { autoAlpha: 1 }, 3.5);
+
+      // beat-grid: ingredient cards snap on beat grid
+      tl.fromTo("#card-1", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "back.out(1.8)" }, 4.02);
+      tl.fromTo("#card-2", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "back.out(1.8)" }, 4.80);
+      tl.fromTo("#card-3", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "back.out(1.8)" }, 5.60);
+      tl.fromTo("#card-4", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "back.out(1.8)" }, 6.40);
+
+      tl.fromTo("#forge-btn",
+        { scale: 0.8, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.35, ease: "elastic.out(1, 0.6)" },
+        7.10
+      );
+      tl.to("#forge-btn", { scale: 0.95, duration: 0.1, overwrite: "auto" }, 7.25);
+      tl.to("#forge-btn", { scale: 1.05, duration: 0.15, overwrite: "auto" }, 7.35);
+      tl.to("#scene-2", { autoAlpha: 0, duration: 0.25 }, 8.3);
+
+      // ─── SCENE 3: Dual-Engine AI Forge (8.5s - 12.0s) ───
+      tl.set("#scene-3", { autoAlpha: 1 }, 8.5);
+      tl.fromTo(".dual-engine-box",
+        { y: -30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
+        8.6
+      );
+      tl.fromTo(".forge-status-box",
+        { scale: 0.9, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.5)" },
+        8.8
+      );
+
+      // Progress bar fill & text transitions
+      tl.to("#ai-progress", { width: "35%", duration: 0.9, ease: "power1.inOut" }, 8.9);
+      tl.call(() => {
+        const el = document.getElementById("ai-status");
+        if (el) el.textContent = "Calculating flavor synergies...";
+      }, null, 9.8);
+      tl.to("#ai-progress", { width: "75%", duration: 0.9, ease: "power1.inOut" }, 9.8);
+      tl.call(() => {
+        const el = document.getElementById("ai-status");
+        if (el) el.textContent = "Rolling for critical taste...";
+      }, null, 10.7);
+      tl.to("#ai-progress", { width: "100%", duration: 0.9, ease: "power1.inOut" }, 10.7);
+      tl.to("#scene-3", { autoAlpha: 0, duration: 0.25 }, 11.8);
+
+      // ─── SCENE 4: Legendary Unbox (12.0s - 16.5s) ───
+      // beat-locked: 12.02s
+      tl.set("#scene-4", { autoAlpha: 1 }, 12.0);
+      tl.fromTo("#masterpiece",
+        { scale: 0.7, opacity: 0, y: 50 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: "back.out(1.7)" },
+        12.02
+      );
+
+      // XP tick-up effect
+      tl.fromTo("#xp-counter",
+        { scale: 1.4, color: "#EA580C" },
+        { scale: 1, color: "#1C1917", duration: 0.5, ease: "bounce.out" },
+        12.55
+      );
+
+      // Sequential step reveals (keeps screen moving)
+      tl.fromTo("#step-1", { x: -20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 13.2);
+      tl.fromTo("#step-2", { x: -20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 14.1);
+      tl.fromTo("#step-3", { x: -20, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 15.0);
+
+      tl.to("#scene-4", { autoAlpha: 0, duration: 0.25 }, 16.3);
+
+      // ─── SCENE 5: Outro (16.5s - 20.0s) ───
+      tl.set("#scene-5", { autoAlpha: 1 }, 16.5);
+      tl.fromTo(".brand-title",
+        { y: -35, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" },
+        16.6
+      );
+      tl.fromTo(".brand-tagline",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.35 },
+        16.9
+      );
+
+      // Outro badges snap in
+      tl.fromTo("#feat-1", { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.8)" }, 17.1);
+      tl.fromTo("#feat-2", { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.8)" }, 17.35);
+      tl.fromTo("#feat-3", { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.8)" }, 17.6);
+
+      tl.fromTo("#cta-punchline",
+        { scale: 0.9, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.4, ease: "elastic.out(1, 0.7)" },
+        17.9
+      );
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

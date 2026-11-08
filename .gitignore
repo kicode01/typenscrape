@@ -42,6 +42,7 @@ layer1.json
 layer2.json
 
 # scratch & test files
+.hyperframes/
 tmp_grep.json
 Thumbs.db
 test-*.js

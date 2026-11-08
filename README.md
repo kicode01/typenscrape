@@ -9,6 +9,14 @@
 [![Sync](https://img.shields.io/badge/Cloud-Firebase_Firestore-orange.svg)](https://firebase.google.com)
 [![License](https://img.shields.io/badge/License-MIT-gray.svg)](LICENSE)
 
+<p align="center">
+  <a href="brag-output/brag.mp4">
+    <img src="brag-output/brag.jpg" alt="TypenScrape Launch Video" width="850" />
+  </a>
+  <br />
+  <em>🎬 <strong>Watch the Launch Video</strong>: <a href="brag-output/brag.mp4"><code>brag-output/brag.mp4</code></a> — <em>Ingredients first. Life stories never.</em></em>
+</p>
+
 ---
 
 ## Overview
