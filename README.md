@@ -9,9 +9,7 @@
 [![Sync](https://img.shields.io/badge/Cloud-Firebase_Firestore-orange.svg)](https://firebase.google.com)
 [![License](https://img.shields.io/badge/License-MIT-gray.svg)](LICENSE)
 
-<p align="center">
-  <video src="https://github.com/user-attachments/assets/70d1d8a0-d276-45a2-9ae3-407d4105ae36" controls width="100%"></video>
-</p>
+https://github.com/user-attachments/assets/945ffebe-2054-4e4f-8799-cbe5b2fafc30
 
 ---
 
